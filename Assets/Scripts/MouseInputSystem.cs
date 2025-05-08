@@ -11,8 +11,11 @@ public class MouseInputSystem : MonoBehaviour
     [SerializeField] private GameObject _hitCube;
     [SerializeField] private GameObject _treeLeaves;
     [SerializeField] private GameObject _potentialGrowCube;
-    [SerializeField] private PlayerOneScript _playerScript;
+    [SerializeField] private GameManager _gameManager;
+    
+    
     private bool _hasClicked=false;
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -23,6 +26,7 @@ public class MouseInputSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         if (Input.GetMouseButtonDown(0))
         {
             _hasClicked = true;
@@ -36,6 +40,8 @@ public class MouseInputSystem : MonoBehaviour
         }
     }
 
+    
+
     private void CheckRayCollisions()
     {
         RaycastHit hit;
@@ -43,7 +49,7 @@ public class MouseInputSystem : MonoBehaviour
         if (Physics.Raycast(_mouseClickRay, out hit, 50f))
         {
             //chopping
-            if ((hit.collider.gameObject.layer == 3) && _hasClicked && _playerScript.IsChopping)
+            if ((hit.collider.gameObject.layer == 3) && _hasClicked && _gameManager.ActivePlayerScript.IsChopping)
             {
                 //destroy the cube that was hit
 
@@ -60,9 +66,9 @@ public class MouseInputSystem : MonoBehaviour
             {
                 EraseListElements();
 
-                _playerScript.SunLightPoints -= 1;
+                _gameManager.ActivePlayerScript.SunLightPoints -= 1;
                 GameObject hitCube = hit.collider.gameObject;
-                FillOpenSpot(hitCube.transform.position, Vector3.zero, _treeLeaves, _playerScript.MyLeaves);
+                FillOpenSpot(hitCube.transform.position, Vector3.zero, _treeLeaves, _gameManager.ActivePlayerScript.MyLeaves);
                 Destroy(hitCube);
                 _hasClicked = false;
             }
@@ -112,10 +118,10 @@ public class MouseInputSystem : MonoBehaviour
 
     private void EraseListElements()
     {
-        for (int i = _playerScript.MyPotentialGrowCubes.Count - 1; i >= 0; i--)
+        for (int i = _gameManager.ActivePlayerScript.MyPotentialGrowCubes.Count - 1; i >= 0; i--)
         {
-            Destroy(_playerScript.MyPotentialGrowCubes[i]);
-            _playerScript.MyPotentialGrowCubes.RemoveAt(i);
+            Destroy(_gameManager.ActivePlayerScript.MyPotentialGrowCubes[i]);
+            _gameManager.ActivePlayerScript.MyPotentialGrowCubes.RemoveAt(i);
         }
     }
 
@@ -126,42 +132,42 @@ public class MouseInputSystem : MonoBehaviour
         {
             if (hit.collider == null)
             {
-                FillOpenSpot(hitCube.transform.position,Vector3.up,spawnObject, _playerScript.MyPotentialGrowCubes);
+                FillOpenSpot(hitCube.transform.position,Vector3.up,spawnObject, _gameManager.ActivePlayerScript.MyPotentialGrowCubes);
             }
         }
         if (!Physics.Raycast(hitCube.transform.position, Vector3.right, out hit, 1f)) //right
         {
             if (hit.collider == null)
             {
-                FillOpenSpot(hitCube.transform.position, Vector3.right, spawnObject, _playerScript.MyPotentialGrowCubes);
+                FillOpenSpot(hitCube.transform.position, Vector3.right, spawnObject, _gameManager.ActivePlayerScript.MyPotentialGrowCubes);
             }
         }
         if (!Physics.Raycast(hitCube.transform.position, -Vector3.right, out hit, 1f)) //left
         {
             if (hit.collider == null)
             {
-                FillOpenSpot(hitCube.transform.position, -Vector3.right, spawnObject, _playerScript.MyPotentialGrowCubes);
+                FillOpenSpot(hitCube.transform.position, -Vector3.right, spawnObject, _gameManager.ActivePlayerScript.MyPotentialGrowCubes);
             }
         }
         if (!Physics.Raycast(hitCube.transform.position, -Vector3.up, out hit, 1f)) //down
         {
             if (hit.collider == null)
             {
-                FillOpenSpot(hitCube.transform.position, -Vector3.up, spawnObject, _playerScript.MyPotentialGrowCubes);
+                FillOpenSpot(hitCube.transform.position, -Vector3.up, spawnObject, _gameManager.ActivePlayerScript.MyPotentialGrowCubes);
             }
         }
         if (!Physics.Raycast(hitCube.transform.position, Vector3.forward, out hit, 1f)) //forward
         {
             if (hit.collider == null)
             {
-                FillOpenSpot(hitCube.transform.position, Vector3.forward, spawnObject, _playerScript.MyPotentialGrowCubes);
+                FillOpenSpot(hitCube.transform.position, Vector3.forward, spawnObject, _gameManager.ActivePlayerScript.MyPotentialGrowCubes);
             }
         }
         if (!Physics.Raycast(hitCube.transform.position, -Vector3.forward, out hit, 1f)) //backward
         {
             if (hit.collider == null)
             {
-                FillOpenSpot(hitCube.transform.position, -Vector3.forward, spawnObject, _playerScript.MyPotentialGrowCubes);
+                FillOpenSpot(hitCube.transform.position, -Vector3.forward, spawnObject, _gameManager.ActivePlayerScript.MyPotentialGrowCubes);
             }
         }
     }

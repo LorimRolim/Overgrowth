@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,10 +20,14 @@ public class PlayerOneScript : MonoBehaviour
     [SerializeField] private GameObject _treeLeaves;
     [SerializeField] private GameObject _treeRoots;
 
+    [SerializeField] private MeshRenderer _leafRenderer;
+    [SerializeField] private MeshRenderer _rootRenderer;
+
     private GameObject _myLeaves;
     private GameObject _myRoots;
 
-    [SerializeField] private Color _myColor;
+    [SerializeField] private Material _leafMat;
+    [SerializeField] private Material _rootMat;
 
     [SerializeField] private GameObject[] targetObjects; // Drag multiple objects (e.g., cubes) into this array in the Inspector
     [SerializeField] private float raycastDistance = 10f; // Distance the raycast will travel
@@ -31,43 +36,42 @@ public class PlayerOneScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        SetMyMaterial();
         PlayerStartPosition = transform.position;
         //spawn 1 leaf + 1 root
-        Renderer LeafRenderer =_treeLeaves.GetComponent<Renderer>();
-        LeafRenderer.material.color = _myColor;
-         
+        
         Instantiate(_treeLeaves, PlayerStartPosition,Quaternion.identity); 
         Instantiate(_treeLeaves,PlayerStartPosition-Vector3.up,Quaternion.identity);
-        
+    }
+
+    private void SetMyMaterial()
+    {
+        _leafRenderer.material = _leafMat;
+        _rootRenderer.material = _rootMat;
     }
 
     // Update is called once per frame
     void Update()
     {
         
-            foreach (GameObject targetObject in MyLeaves)
+        foreach (GameObject targetObject in MyLeaves)
+        {
+            // Get the position of the target object
+            Vector3 objectPosition = targetObject.transform.position;
+
+            // Perform a raycast upwards
+            Ray ray = new Ray(objectPosition, Vector3.up);
+            bool isShadowed = Physics.Raycast(ray, raycastDistance);
+
+            // Debug visualization
+            Debug.DrawRay(objectPosition, Vector3.up * raycastDistance, isShadowed ? Color.red : Color.green);
+
+            // Log the result
+            if (isShadowed)
             {
-                
-                    // Get the position of the target object
-                    Vector3 objectPosition = targetObject.transform.position;
-
-                    // Perform a raycast upwards
-                    Ray ray = new Ray(objectPosition, Vector3.up);
-                    bool isShadowed = Physics.Raycast(ray, raycastDistance);
-
-                    // Debug visualization
-                    Debug.DrawRay(objectPosition, Vector3.up * raycastDistance, isShadowed ? Color.red : Color.green);
-
-                    // Log the result
-                    if (isShadowed)
-                    {
                 SunLightPoints += 1;
-
-                    }
-                    
-                
-                
             }
+        }
         
         
     }

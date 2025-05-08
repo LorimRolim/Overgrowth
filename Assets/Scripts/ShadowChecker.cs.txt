@@ -1,0 +1,48 @@
+using UnityEngine;
+
+public class ShadowChecker : MonoBehaviour
+{
+    [SerializeField] private GameObject[] targetObjects; // Drag multiple objects (e.g., cubes) into this array in the Inspector
+    [SerializeField] private float raycastDistance = 10f; // Distance the raycast will travel
+
+    void Update()
+    {
+        // Ensure the target objects array is not null or empty
+        if (targetObjects != null && targetObjects.Length > 0)
+        {
+            foreach (GameObject targetObject in targetObjects)
+            {
+                if (targetObject != null)
+                {
+                    // Get the position of the target object
+                    Vector3 objectPosition = targetObject.transform.position;
+
+                    // Perform a raycast upwards
+                    Ray ray = new Ray(objectPosition, Vector3.up);
+                    bool isShadowed = Physics.Raycast(ray, raycastDistance);
+
+                    // Debug visualization
+                    Debug.DrawRay(objectPosition, Vector3.up * raycastDistance, isShadowed ? Color.red : Color.green);
+
+                    // Log the result
+                    if (isShadowed)
+                    {
+                        Debug.Log($"The ray hit something above the object: {targetObject.name}");
+                    }
+                    else
+                    {
+                        Debug.Log($"The ray did not hit anything above the object: {targetObject.name}");
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning("One of the target objects in the array is null!");
+                }
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Target objects array is not assigned or is empty! Please drag objects into the script.");
+        }
+    }
+}

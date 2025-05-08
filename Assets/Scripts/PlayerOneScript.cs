@@ -17,6 +17,12 @@ public class PlayerOneScript : MonoBehaviour
     public Vector3 PlayerStartPosition;
 
     [SerializeField] private GameObject _treeLeaves;
+    [SerializeField] private GameObject _treeRoots;
+
+    private GameObject _myLeaves;
+    private GameObject _myRoots;
+
+    [SerializeField] private Color _myColor;
 
     [SerializeField] private GameObject[] targetObjects; // Drag multiple objects (e.g., cubes) into this array in the Inspector
     [SerializeField] private float raycastDistance = 10f; // Distance the raycast will travel
@@ -27,8 +33,12 @@ public class PlayerOneScript : MonoBehaviour
     {
         PlayerStartPosition = transform.position;
         //spawn 1 leaf + 1 root
+        Renderer LeafRenderer =_treeLeaves.GetComponent<Renderer>();
+        LeafRenderer.material.color = _myColor;
+         
         Instantiate(_treeLeaves, PlayerStartPosition,Quaternion.identity); 
         Instantiate(_treeLeaves,PlayerStartPosition-Vector3.up,Quaternion.identity);
+        
     }
 
     // Update is called once per frame

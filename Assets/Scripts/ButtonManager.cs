@@ -18,7 +18,7 @@ public class ButtonManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _sunLightAmount.text =  "" + _playerScript.SunLightPoints;
+        //_sunLightAmount.text =  "" + _playerScript.SunLightPoints;
     }
     public void ChopClick()
     {

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -6,6 +7,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int _playerIndex;
     public PlayerOneScript ActivePlayerScript;
     public PlayerOneScript[] PlayerScripts;
+    public List<GameObject> InActiveGameObjects = new List<GameObject>();
+
+    public float BoardBorder = 5;
 
     void Start()
     {
@@ -19,6 +23,16 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.RightShift)) // KeyCode.Return corresponds to the Enter key
         {
             UpdateActivePlayer();
+        }
+        EraseInActiveGameObjects();
+    }
+
+    private void EraseInActiveGameObjects()
+    {
+        for (int i = InActiveGameObjects.Count - 1; i >= 0; i--)
+        {
+            Destroy(InActiveGameObjects[i]);
+            InActiveGameObjects.RemoveAt(i);
         }
     }
 

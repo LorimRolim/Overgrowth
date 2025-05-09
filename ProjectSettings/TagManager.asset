@@ -3,7 +3,10 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - Leaf
+  - Root
+  - PotentialCube
   layers:
   - Default
   - TransparentFX

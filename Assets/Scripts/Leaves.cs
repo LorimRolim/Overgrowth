@@ -6,6 +6,8 @@ public class Leaves : MonoBehaviour
     [SerializeField] private GameManager _gameManagerScript;
     [SerializeField] private float raycastDistance=10f ;
 
+    public bool IsOutsideBoard;
+
     public void CheckIfInShadow()
     {
         foreach (GameObject targetObject in _gameManagerScript.ActivePlayerScript.MyLeaves)
@@ -15,24 +17,22 @@ public class Leaves : MonoBehaviour
 
             // Perform a raycast upwards
             Ray ray = new Ray(objectPosition, Vector3.up);
-            bool isShadowed = Physics.Raycast(ray, raycastDistance);
-
-            // Debug visualization
-            Debug.DrawRay(objectPosition, Vector3.up * raycastDistance, isShadowed ? Color.red : Color.green);
-
-            // Log the result
-            if (isShadowed)
+            if(Physics.Raycast(ray, raycastDistance))
             {
-                _gameManagerScript.ActivePlayerScript.SunLightPoints += 1;
+                IsInShadowed = true;
             }
+            else
+            {
+                IsInShadowed=false;
+            }
+            
+            // Debug visualization
+            Debug.DrawRay(objectPosition, Vector3.up * raycastDistance, IsInShadowed ? Color.red : Color.green);
+
         }
     }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    
+    
 
     // Update is called once per frame
     void Update()

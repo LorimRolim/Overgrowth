@@ -55,12 +55,9 @@ public class MouseInputSystem : MonoBehaviour
 
                 GameObject hitCube = hit.collider.gameObject;
                 _hasClicked = false;
-                //
+                
                 Destroy(hitCube);
             }
-        }
-        if (Physics.Raycast(_mouseClickRay, out hit, 50f))
-        {
             //grow a leaf
             if ((hit.collider.gameObject.layer == 6) && _hasClicked)
             {
@@ -68,13 +65,11 @@ public class MouseInputSystem : MonoBehaviour
 
                 _gameManager.ActivePlayerScript.SunLightPoints -= 1;
                 GameObject hitCube = hit.collider.gameObject;
-                FillOpenSpot(hitCube.transform.position, Vector3.zero, _treeLeaves, _gameManager.ActivePlayerScript.MyLeaves);
+                GameObject spawnedObject=FillOpenSpot(hitCube.transform.position, Vector3.zero, _treeLeaves, _gameManager.ActivePlayerScript.MyLeaves);
+                
                 Destroy(hitCube);
                 _hasClicked = false;
             }
-        }
-        if (Physics.Raycast(_mouseClickRay, out hit, 50f))
-        {
             //check potential
             if ((hit.collider.gameObject.layer == 3) && _hasClicked)
             {
@@ -83,38 +78,9 @@ public class MouseInputSystem : MonoBehaviour
                 _hasClicked = false;
             }
         }
-        ////chopping
-        //if ((hit.collider.gameObject.layer == 3) && _hasClicked && _playerScript.IsChopping)
-        //{
-        //    //destroy the cube that was hit
-
-        //    GameObject hitCube = hit.collider.gameObject;
-        //    _hasClicked = false;
-        //    //
-        //    Destroy(hitCube);
-        //}
-
-        ////grow a leaf
-        //if ((hit.collider.gameObject.layer == 6) && _hasClicked)
-        //{
-        //    EraseListElements();
-
-        //    _playerScript.SunLightPoints -= 1;
-        //    GameObject hitCube = hit.collider.gameObject;
-        //    FillOpenSpot(hitCube.transform.position, Vector3.zero, _treeLeaves, _playerScript.MyLeaves);
-        //    Destroy(hitCube);
-        //    _hasClicked = false;
-        //}
-
-        ////check potential
-        //if ((hit.collider.gameObject.layer == 3) && _hasClicked)
-        //{
-        //    _hitCube = hit.collider.gameObject;
-        //    CheckOpenNeighbouringSpots(_hitCube, _potentialGrowCube);
-        //    _hasClicked = false;
-
-        //}
+        
     }
+
 
     private void EraseListElements()
     {
@@ -172,13 +138,36 @@ public class MouseInputSystem : MonoBehaviour
         }
     }
 
-    private void FillOpenSpot(Vector3 position, Vector3 direction,GameObject spawnObject, List<GameObject> targetList)
+    private GameObject FillOpenSpot(Vector3 position, Vector3 direction,GameObject spawnObject, List<GameObject> targetList)
     {
         //add the new cube to the players list of leaves
         Vector3 spawnPosition = position + direction * 1f;
-        GameObject spawnedObject=Instantiate(spawnObject,spawnPosition,Quaternion.identity);
-        targetList.Add(spawnedObject);
 
+        if (spawnObject.tag == "Leaf")
+        {
+            GameObject spawnedObject = Instantiate(spawnObject, spawnPosition, Quaternion.identity);
+            Leaves spawnedObjectScript = spawnedObject.GetComponent<Leaves>();
+            if ((spawnPosition.x > _gameManager.BoardBorder) || (spawnPosition.y > _gameManager.BoardBorder) || (spawnPosition.z > _gameManager.BoardBorder))
+            {
+                _gameManager.InActiveGameObjects.Add(spawnedObject);
+            }
+            else
+            {
+                targetList.Add(spawnedObject);
+                
+            }
+            return spawnedObject;
+        }
+        if (spawnObject.tag == "PotentialCube")
+        {
+            GameObject spawnedObject = Instantiate(spawnObject, spawnPosition, Quaternion.identity);
+            targetList.Add(spawnedObject);
+            return spawnedObject;
+        }
+        else
+        {
+            return spawnObject;
+        }
     }
     private void OnDrawGizmos()
     {

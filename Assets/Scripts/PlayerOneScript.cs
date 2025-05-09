@@ -8,7 +8,8 @@ public class PlayerOneScript : MonoBehaviour
     // have all variables 
     public List<GameObject> MyLeaves = new List<GameObject>();
     public List<GameObject> MyPotentialGrowCubes= new List<GameObject>();
-
+    public List<GameObject> MyRoots = new List<GameObject>();
+    
     public bool IsGrowing=true;
     public bool IsChopping=false;
 
@@ -23,15 +24,10 @@ public class PlayerOneScript : MonoBehaviour
     [SerializeField] private MeshRenderer _leafRenderer;
     [SerializeField] private MeshRenderer _rootRenderer;
 
-    private GameObject _myLeaves;
-    private GameObject _myRoots;
-
     [SerializeField] private Material _leafMat;
     [SerializeField] private Material _rootMat;
 
-    [SerializeField] private GameObject[] targetObjects; // Drag multiple objects (e.g., cubes) into this array in the Inspector
     [SerializeField] private float raycastDistance = 10f; // Distance the raycast will travel
-
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -54,24 +50,7 @@ public class PlayerOneScript : MonoBehaviour
     void Update()
     {
         
-        foreach (GameObject targetObject in MyLeaves)
-        {
-            // Get the position of the target object
-            Vector3 objectPosition = targetObject.transform.position;
-
-            // Perform a raycast upwards
-            Ray ray = new Ray(objectPosition, Vector3.up);
-            bool isShadowed = Physics.Raycast(ray, raycastDistance);
-
-            // Debug visualization
-            Debug.DrawRay(objectPosition, Vector3.up * raycastDistance, isShadowed ? Color.red : Color.green);
-
-            // Log the result
-            if (isShadowed)
-            {
-                SunLightPoints += 1;
-            }
-        }
+        
         
         
     }

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5991885634734719477}
   m_Layer: 3
   m_Name: Leaf_P1
-  m_TagString: Untagged
+  m_TagString: Leaf
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -124,3 +124,4 @@ MonoBehaviour:
   IsInShadowed: 0
   _gameManagerScript: {fileID: 0}
   raycastDistance: 10
+  IsOutsideBoard: 0

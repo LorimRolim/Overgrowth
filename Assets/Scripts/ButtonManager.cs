@@ -1,13 +1,15 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class ButtonManager : MonoBehaviour
 {
-    [SerializeField] private PlayerOneScript _playerScript;
+    [SerializeField] private GameManager _gameManager;
+    private PlayerOneScript _playerScript;
 
     //button texts
-    public Text _sunLightAmount;
-    [SerializeField] private Text _waterAmount;
+    //public TextField _sunLightAmount;
+    //[SerializeField] private Text _waterAmount;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -18,7 +20,8 @@ public class ButtonManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //_sunLightAmount.text =  "" + _playerScript.SunLightPoints;
+        _playerScript = _gameManager.ActivePlayerScript;
+        
     }
     public void ChopClick()
     {

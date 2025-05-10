@@ -9,7 +9,8 @@ public class GameManager : MonoBehaviour
     public PlayerOneScript[] PlayerScripts;
     public List<GameObject> InActiveGameObjects = new List<GameObject>();
 
-    public float BoardBorder = 5;
+    public float BoardBorder = 5f;
+    public float WaterLevel = 5f;
 
     void Start()
     {

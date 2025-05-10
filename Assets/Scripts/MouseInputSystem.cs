@@ -147,7 +147,7 @@ public class MouseInputSystem : MonoBehaviour
         {
             GameObject spawnedObject = Instantiate(spawnObject, spawnPosition, Quaternion.identity);
             Leaves spawnedObjectScript = spawnedObject.GetComponent<Leaves>();
-            if ((spawnPosition.x > _gameManager.BoardBorder) || (spawnPosition.y > _gameManager.BoardBorder) || (spawnPosition.z > _gameManager.BoardBorder))
+            if (IsOutsideBoard(spawnPosition))
             {
                 _gameManager.InActiveGameObjects.Add(spawnedObject);
             }
@@ -169,6 +169,20 @@ public class MouseInputSystem : MonoBehaviour
             return spawnObject;
         }
     }
+
+    private bool IsOutsideBoard(Vector3 spawnPosition)
+    {
+        if((spawnPosition.x > _gameManager.BoardBorder) || (spawnPosition.y > _gameManager.BoardBorder) || (spawnPosition.z > _gameManager.BoardBorder))
+        {
+            return true;
+        }
+        if(((spawnPosition.x < -_gameManager.BoardBorder) || (spawnPosition.y < -_gameManager.BoardBorder) || (spawnPosition.z < -_gameManager.BoardBorder)))
+        {
+            return true;
+        }
+        return false;
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;

@@ -49,9 +49,9 @@ public class PlayerOneScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-        
-        
-        
+        foreach(var leaf in MyLeaves)
+        {
+            leaf.GetComponent<MeshRenderer>().material = _leafMat;
+        }
     }
 }

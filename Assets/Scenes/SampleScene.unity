@@ -363,20 +363,20 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 117835321}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1546011268}
   - {fileID: 1161866485}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 671737100}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 524.6666, y: 312.83334}
+  m_SizeDelta: {x: 1049.3333, y: 625.6667}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &131713289 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6191062863399857097, guid: 5f1ed16c49298be479844a44cbe7ac4b, type: 3}
@@ -1014,6 +1014,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7815427040245945783, guid: 13f4b4a32768e03498e25eff125c0b05, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1178122323}
+    - targetCorrespondingSourceObject: {fileID: 7815427040245945783, guid: 13f4b4a32768e03498e25eff125c0b05, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 117835325}
     - targetCorrespondingSourceObject: {fileID: 4447637359859885566, guid: 13f4b4a32768e03498e25eff125c0b05, type: 3}
       insertIndex: -1
       addedObject: {fileID: 434738909}
@@ -2855,7 +2858,6 @@ SceneRoots:
   - {fileID: 1508940255}
   - {fileID: 411926591}
   - {fileID: 671737096}
-  - {fileID: 117835325}
   - {fileID: 1226635913}
   - {fileID: 1247674129}
   - {fileID: 1546071601}

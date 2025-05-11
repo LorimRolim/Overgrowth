@@ -11,17 +11,12 @@ public class ButtonManager : MonoBehaviour
     //public TextField _sunLightAmount;
     //[SerializeField] private Text _waterAmount;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+   
 
     // Update is called once per frame
     void Update()
     {
         _playerScript = _gameManager.ActivePlayerScript;
-        
     }
     public void ChopClick()
     {

@@ -1,0 +1,91 @@
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PointsCounter : MonoBehaviour
+{
+    // Overgenomen van Liëms code
+    public List<GameObject> MyLeaves = new List<GameObject>();
+
+    [SerializeField] private GameObject _treeLeaves; // Is al declared in PlayerOneScript
+    [SerializeField] private float raycastDistance = 10f; // Distance the raycast will travel
+
+    //Extra Toevoeging:
+    private int TotalSunlightPoints; 
+    private int TotalWaterPoints;
+    private int AcquiredSunlightPoints;
+
+    private int WaterMaintainCost = 1;
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created 
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        //EXTRA toevoeging:
+        WaterMaintainCost = 0; //Reset de maintainCost anders gaat deze blijen opbouwen... 
+
+        int acquiredSunlightPoints = 0; //Worden op het einde van de update naar de Sun/WaterPoints gestuurd
+        int acquiredWaterPoints = 0;
+
+
+        // Liëms code
+        foreach (GameObject targetObject in MyLeaves) // Liëms code voor de SunlightPoints
+        {
+            // Get the position of the target object
+            Vector3 objectPosition = targetObject.transform.position;
+
+            // Perform a raycast upwards
+            Ray ray = new Ray(objectPosition, Vector3.up);
+            bool isShadowed = Physics.Raycast(ray, raycastDistance); //Zou global kunnen gemaakt worden moest het later nodig zijn
+
+            // Debug visualization
+            Debug.DrawRay(objectPosition, Vector3.up * raycastDistance, isShadowed ? Color.red : Color.green);
+
+            // Sunpoint voor wanneer deze niet in de shadow is. MAG GEDELETE WORDEN aangezien lijn 57-69
+            // hetzelfde doet maar met de maintaincost
+
+                //if (!isShadowed)
+                //{
+                //    TotalSunlightpoints += 1;
+                //}
+
+
+            // Nieuwe toeviging bij de code
+
+            if (targetObject.transform.position.y > 0) //Check of het gaat om leaves die boven y 0 zijn
+            {
+                if(isShadowed) //Dubbele waterpointsbetalen wanneer in schaduw bent of 1 wanneer je niet in de schaduw zit
+                {
+                    //Geen SunlightPoints geven
+                    WaterMaintainCost += 2; 
+                }
+                else
+                {
+                    acquiredSunlightPoints += 1;
+                    WaterMaintainCost += 1;
+                }
+            }
+
+            if (targetObject.transform.position.y < 0) // Waterpoint voor wanneer deze "cube" onder Y is
+            {
+                acquiredWaterPoints += 1;
+            }
+        }
+
+        if (acquiredSunlightPoints >= 75)
+        {
+            // Als er 75 of meer cubes zijn die sunlight krijgen dan stopt de game en wint de persoon.
+
+            // Logic to end the game
+        }
+
+
+        TotalSunlightPoints += acquiredSunlightPoints;
+        TotalWaterPoints += acquiredWaterPoints;
+
+    }
+}

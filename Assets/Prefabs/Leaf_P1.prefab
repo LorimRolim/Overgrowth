@@ -123,5 +123,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsInShadowed: 0
   _gameManagerScript: {fileID: 0}
+  _gameManager: {fileID: 0}
   raycastDistance: 10
   IsOutsideBoard: 0

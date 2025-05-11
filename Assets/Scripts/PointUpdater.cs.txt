@@ -1,0 +1,30 @@
+using UnityEngine;
+using UnityEngine.UI;
+
+public class PointUpdater : MonoBehaviour
+{
+    [SerializeField]
+    private float _sunPoints = 0f;
+    [SerializeField]
+    private float _rainPoints = 0f;
+    [SerializeField]
+    private float _blockAmount = 0f;
+
+    
+    public Text _sunPointsText; // Reference to the Text component in the Canvas
+    public Text _rainPointsText; // Reference to the Text component in the Canvas
+    public Text _blockAmountText; // Reference to the Text component in the Canvas
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        _sunPointsText.text = _sunPoints.ToString(); // Directly set the text to the value of _sunPoints
+        _rainPointsText.text = _rainPoints.ToString(); // Directly set the text to the value of _rainPoints
+        _blockAmountText.text = _blockAmount.ToString(); // Directly set the text to the value of _blockAmount
+    }
+}

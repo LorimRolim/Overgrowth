@@ -14,15 +14,9 @@ public class MouseInputSystem : MonoBehaviour
     [SerializeField] private GameManager _gameManager;
     
     
+    
     private bool _hasClicked=false;
     
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -56,27 +50,39 @@ public class MouseInputSystem : MonoBehaviour
                 GameObject hitCube = hit.collider.gameObject;
                 _hasClicked = false;
                 
-                Destroy(hitCube);
+                _gameManager.InActiveGameObjects.Add(hitCube);
+                _gameManager.ActivePlayerScript.MyLeaves.Remove(hitCube);
             }
-            //grow a leaf
-            if ((hit.collider.gameObject.layer == 6) && _hasClicked)
+            if (_gameManager.ActivePlayerScript.IsGrowing)
             {
-                EraseListElements();
+                //grow a leaf or root
+                if ((hit.collider.gameObject.layer == 6) && _hasClicked)
+                {
+                    EraseListElements();
 
-                _gameManager.ActivePlayerScript.SunLightPoints -= 1;
-                GameObject hitCube = hit.collider.gameObject;
-                GameObject spawnedObject=FillOpenSpot(hitCube.transform.position, Vector3.zero, _treeLeaves, _gameManager.ActivePlayerScript.MyLeaves);
-                
-                Destroy(hitCube);
-                _hasClicked = false;
+                    
+                    GameObject hitCube = hit.collider.gameObject;
+                    if (hitCube.transform.position.y - 0.5f < 0)
+                    {
+                        GameObject spawnedObject = FillOpenSpot(hitCube.transform.position, Vector3.zero, _gameManager.ActivePlayerScript.TreeRoot, _gameManager.ActivePlayerScript.MyRoots);
+                    }
+                    if (hitCube.transform.position.y - 0.5f >= 0)
+                    {
+                        GameObject spawnedObject = FillOpenSpot(hitCube.transform.position, Vector3.zero, _gameManager.ActivePlayerScript.TreeLeaf, _gameManager.ActivePlayerScript.MyLeaves);
+                    }
+
+                    //Destroy(hitCube);
+                    _hasClicked = false;
+                }
+                //check potential
+                if ((hit.collider.gameObject.layer == 3 || hit.collider.gameObject.layer == 7) && _hasClicked)
+                {
+                    _hitCube = hit.collider.gameObject;
+                    CheckOpenNeighbouringSpots(_hitCube, _potentialGrowCube);
+                    _hasClicked = false;
+                }
             }
-            //check potential
-            if ((hit.collider.gameObject.layer == 3) && _hasClicked)
-            {
-                _hitCube = hit.collider.gameObject;
-                CheckOpenNeighbouringSpots(_hitCube, _potentialGrowCube);
-                _hasClicked = false;
-            }
+            
         }
         
     }
@@ -143,7 +149,7 @@ public class MouseInputSystem : MonoBehaviour
         //add the new cube to the players list of leaves
         Vector3 spawnPosition = position + direction * 1f;
 
-        if (spawnObject.tag == "Leaf")
+        if (spawnObject.tag == "Leaf"||spawnObject.tag=="Root")
         {
             GameObject spawnedObject = Instantiate(spawnObject, spawnPosition, Quaternion.identity);
             Leaves spawnedObjectScript = spawnedObject.GetComponent<Leaves>();
@@ -154,12 +160,13 @@ public class MouseInputSystem : MonoBehaviour
             else
             {
                 targetList.Add(spawnedObject);
-                
+                _gameManager.ActivePlayerScript.SunLightPoints -= 1;
             }
             return spawnedObject;
         }
         if (spawnObject.tag == "PotentialCube")
         {
+
             GameObject spawnedObject = Instantiate(spawnObject, spawnPosition, Quaternion.identity);
             targetList.Add(spawnedObject);
             return spawnedObject;

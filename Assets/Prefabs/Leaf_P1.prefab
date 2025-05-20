@@ -126,3 +126,4 @@ MonoBehaviour:
   _gameManager: {fileID: 0}
   raycastDistance: 10
   IsOutsideBoard: 0
+  ShadowMultiplier: 1

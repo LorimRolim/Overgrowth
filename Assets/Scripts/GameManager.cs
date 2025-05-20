@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -36,6 +37,8 @@ public class GameManager : MonoBehaviour
     public float WinCondition;
     private bool _nextTurnButtonWasClicked;
 
+    public GameOverScript GameOver;
+
     void Start()
     {
         // Ensure the game starts with Player 1's camera
@@ -45,6 +48,9 @@ public class GameManager : MonoBehaviour
         //IsNextRound = true;
         SetBoardSize();
         
+        GameObject GameOverManager=GameObject.Find("GameOver Manager");
+        GameOver = GameOverManager.GetComponent<GameOverScript>();
+        GameOver.Winner = null;
     }
 
     private void SetStartConditions()
@@ -150,12 +156,13 @@ public class GameManager : MonoBehaviour
         //wincondition
         foreach (var player in PlayerScripts)
         {
-            if (player.HasWon )
+            if (player.HasWon)
             {
+                GameOver.Winner = player.gameObject;
                 //save them and apoint them the winner;
                 if (IsNextRound)
                 {
-                    //go to endscreen;
+                    SceneManager.LoadScene("End Screen");
                 }
 
             }

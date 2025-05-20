@@ -63,7 +63,6 @@ public class MouseInputSystem : MonoBehaviour
                 {
                     EraseListElements();
 
-                    
                     GameObject hitCube = hit.collider.gameObject;
                     if (hitCube.transform.position.y - 0.5f < 0)
                     {

@@ -7,8 +7,9 @@ public class Leaves : MonoBehaviour
     [SerializeField] private GameObject _gameManager;
     [SerializeField] private float raycastDistance=10f ;
     
-
     public bool IsOutsideBoard;
+
+    public int ShadowMultiplier = 1;
 
     public void CheckIfInShadow()
     {
@@ -18,10 +19,12 @@ public class Leaves : MonoBehaviour
         if(Physics.Raycast(ray, raycastDistance))
         {
             IsInShadowed = true;
+            ShadowMultiplier = 2;
         }
         else
         {
             IsInShadowed=false;
+            ShadowMultiplier = 1;
         }
             
         // Debug visualization

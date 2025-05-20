@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1248233537198114785}
   - component: {fileID: 6191062863399857097}
+  - component: {fileID: 6886762832202062184}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -46,11 +47,44 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MyLeaves: []
   MyPotentialGrowCubes: []
+  MyRoots: []
   IsGrowing: 0
   IsChopping: 0
+  _gameManager: {fileID: 0}
   SunLightPoints: 0
   WaterPoints: 0
+  LeafCount: 0
+  SunPointsText: {fileID: 0}
+  WaterPointsText: {fileID: 0}
+  LeafCountText: {fileID: 0}
   PlayerStartPosition: {x: 0, y: 0, z: 0}
-  _treeLeaves: {fileID: 3040937069759192352, guid: 041b4abf396070f46bb10ea657516081, type: 3}
-  targetObjects: []
+  TreeLeaf: {fileID: 0}
+  TreeRoot: {fileID: 0}
+  _leafRenderer: {fileID: 0}
+  _rootRenderer: {fileID: 0}
+  LeafMat: {fileID: 0}
+  _rootMat: {fileID: 0}
   raycastDistance: 10
+  HasTooLittleWater: 0
+  _growButtonImage: {fileID: 0}
+  HasWon: 0
+--- !u!114 &6886762832202062184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3494818521615708618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e9d0e5ffdd31574792d9a703c4f7fd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SunlightAdder: {fileID: 0}
+  WaterPointsAdder: {fileID: 0}
+  LeafAdder: {fileID: 0}
+  VisualizationTime: 3
+  VisualizationTimer: 0
+  IsVisualizing: 0
+  TextPlace: {fileID: 0}
+  Text: 

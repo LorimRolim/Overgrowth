@@ -18,7 +18,6 @@ public class Leaves : MonoBehaviour
         if(Physics.Raycast(ray, raycastDistance))
         {
             IsInShadowed = true;
-                
         }
         else
         {
@@ -28,7 +27,6 @@ public class Leaves : MonoBehaviour
         // Debug visualization
         Debug.DrawRay(transform.position, Vector3.up * raycastDistance, IsInShadowed ? Color.red : Color.green);
 
-        
     }
     
 }

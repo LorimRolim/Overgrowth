@@ -10,6 +10,7 @@ public class PlayerOneScript : MonoBehaviour
     public List<GameObject> MyLeaves = new List<GameObject>();
     public List<GameObject> MyPotentialGrowCubes= new List<GameObject>();
     public List<GameObject> MyRoots = new List<GameObject>();
+    [SerializeField] private WriteFeedbackOnScreen _feedbackWriter;
     
     public bool IsGrowing=true;
     public bool IsChopping=false;
@@ -17,6 +18,7 @@ public class PlayerOneScript : MonoBehaviour
     [SerializeField] private GameManager _gameManager;
 
     [Header("points")]
+    private int _acquiredSunlightPoints;
     public int SunLightPoints;
     public int WaterPoints;
     public int LeafCount;
@@ -42,16 +44,17 @@ public class PlayerOneScript : MonoBehaviour
 
     [SerializeField] private Image _growButtonImage;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public bool HasWon=false;
+    public int AcquiredWaterPoints;
+
+    public void SetStartConditions()
     {
         SetMyMaterial();
-        PlayerStartPosition = transform.position;
 
         //spawn 1 leaf + 1 root
-        GameObject firstLeaf=Instantiate(TreeLeaf, PlayerStartPosition,Quaternion.identity); 
+        GameObject firstLeaf = Instantiate(TreeLeaf, PlayerStartPosition, Quaternion.identity);
         MyLeaves.Add(firstLeaf);
-        GameObject firstRoot=Instantiate(TreeRoot,PlayerStartPosition-Vector3.up,Quaternion.identity);
+        GameObject firstRoot = Instantiate(TreeRoot, PlayerStartPosition - Vector3.up, Quaternion.identity);
         MyRoots.Add(firstRoot);
     }
 
@@ -64,12 +67,18 @@ public class PlayerOneScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        _feedbackWriter=GetComponent<WriteFeedbackOnScreen>();
+
         LeafCount=MyLeaves.Count;
         
         //CalculateWaterPoints();
         if (SunLightPoints <= 0)
         {
             IsGrowing = false;
+        }
+        if (_gameManager.IsNewTurn)
+        {
+            IsGrowing = true;
         }
 
         foreach (var leaf in MyLeaves)
@@ -82,6 +91,15 @@ public class PlayerOneScript : MonoBehaviour
             if (_gameManager.IsNewTurn)
             {
                 CalculateAcquiredSunPoints(leafScript);
+                _feedbackWriter.IsVisualizing = true;
+                _feedbackWriter.SunlightPoints = _acquiredSunlightPoints;
+                _feedbackWriter.SunlightSign = "+";
+
+                _feedbackWriter.WaterPoints = 0;
+                _feedbackWriter.WaterSign = "+";
+
+                _feedbackWriter.LeafsAdded = "0";
+                _feedbackWriter.LeafSign = "+";
             }
         }
         foreach (var root in MyRoots)
@@ -91,6 +109,15 @@ public class PlayerOneScript : MonoBehaviour
             if (_gameManager.IsNewTurn)
             {
                 rootScript.GiveWaterpoints();
+                _feedbackWriter.IsVisualizing = true;
+                _feedbackWriter.SunlightPoints = 0;
+                _feedbackWriter.SunlightSign = "+";
+
+                _feedbackWriter.WaterPoints = AcquiredWaterPoints;
+                _feedbackWriter.WaterSign = "+";
+
+                _feedbackWriter.LeafsAdded = "0";
+                _feedbackWriter.LeafSign = "+";
             }
         }
 
@@ -99,6 +126,15 @@ public class PlayerOneScript : MonoBehaviour
             if ((WaterPoints - LeafCount) < 0)
             {
                 HasTooLittleWater = true;
+                _feedbackWriter.IsVisualizing = true;
+                _feedbackWriter.SunlightPoints = 0;
+                _feedbackWriter.SunlightSign = "+";
+
+                _feedbackWriter.WaterPoints = LeafCount;
+                _feedbackWriter.WaterSign = "-";
+
+                _feedbackWriter.LeafsAdded = "0";
+                _feedbackWriter.LeafSign = "+";
             }
             else
             {
@@ -124,8 +160,12 @@ public class PlayerOneScript : MonoBehaviour
             WaterPoints -= LeafCount;
             _growButtonImage.color = Color.green;
         }
-        
+        if (_acquiredSunlightPoints >= _gameManager.WinCondition)
+        {
+            HasWon = true;
+        }
         //Update UI points
+        _acquiredSunlightPoints = 0;
         SunPointsText.text = SunLightPoints.ToString();
         WaterPointsText.text = WaterPoints.ToString();
         LeafCountText.text = LeafCount.ToString();
@@ -136,6 +176,7 @@ public class PlayerOneScript : MonoBehaviour
     {
         if (!leafScript.IsInShadowed)
         {
+            _acquiredSunlightPoints++;
             SunLightPoints++;
         }
     }

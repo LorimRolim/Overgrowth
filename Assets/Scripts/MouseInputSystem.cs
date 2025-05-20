@@ -12,15 +12,18 @@ public class MouseInputSystem : MonoBehaviour
     [SerializeField] private GameObject _treeLeaves;
     [SerializeField] private GameObject _potentialGrowCube;
     [SerializeField] private GameManager _gameManager;
-    
-    
-    
+
+    [SerializeField] private WriteFeedbackOnScreen _feedbackWriter;
+
+
+
     private bool _hasClicked=false;
     
     // Update is called once per frame
     void Update()
     {
-        
+        _feedbackWriter = GetComponent<WriteFeedbackOnScreen>();
+
         if (Input.GetMouseButtonDown(0))
         {
             _hasClicked = true;
@@ -65,10 +68,21 @@ public class MouseInputSystem : MonoBehaviour
                     if (hitCube.transform.position.y - 0.5f < 0)
                     {
                         GameObject spawnedObject = FillOpenSpot(hitCube.transform.position, Vector3.zero, _gameManager.ActivePlayerScript.TreeRoot, _gameManager.ActivePlayerScript.MyRoots);
+                        
                     }
                     if (hitCube.transform.position.y - 0.5f >= 0)
                     {
                         GameObject spawnedObject = FillOpenSpot(hitCube.transform.position, Vector3.zero, _gameManager.ActivePlayerScript.TreeLeaf, _gameManager.ActivePlayerScript.MyLeaves);
+                        _feedbackWriter.IsVisualizing = true;
+                        _feedbackWriter.SunlightPoints = 1;
+                        _feedbackWriter.SunlightSign = "-";
+
+                        _feedbackWriter.WaterPoints = 0;
+                        _feedbackWriter.WaterSign = "+";
+
+                        _feedbackWriter.LeafsAdded = "1";
+                        _feedbackWriter.LeafSign = "+";
+
                     }
 
                     //Destroy(hitCube);
@@ -87,7 +101,7 @@ public class MouseInputSystem : MonoBehaviour
         
     }
 
-
+   
     private void EraseListElements()
     {
         for (int i = _gameManager.ActivePlayerScript.MyPotentialGrowCubes.Count - 1; i >= 0; i--)
@@ -179,11 +193,11 @@ public class MouseInputSystem : MonoBehaviour
 
     private bool IsOutsideBoard(Vector3 spawnPosition)
     {
-        if((spawnPosition.x > _gameManager.BoardBorder) || (spawnPosition.y > _gameManager.BoardBorder) || (spawnPosition.z > _gameManager.BoardBorder))
+        if((spawnPosition.x > _gameManager.BoardBorder) || (spawnPosition.y > _gameManager.BoardHeight) || (spawnPosition.z > _gameManager.BoardBorder))
         {
             return true;
         }
-        if(((spawnPosition.x < -_gameManager.BoardBorder) || (spawnPosition.y < -_gameManager.BoardBorder) || (spawnPosition.z < -_gameManager.BoardBorder)))
+        if(((spawnPosition.x < -_gameManager.BoardBorder) || (spawnPosition.y < -_gameManager.BoardHeight) || (spawnPosition.z < -_gameManager.BoardBorder)))
         {
             return true;
         }

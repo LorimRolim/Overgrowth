@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
         // Ensure the game starts with Player 1's camera
         WinCondition = ((BoardBorder * BoardBorder) * 4)*0.75f;
         SetStartConditions();
-        DeActivatePlayerBodies();
+        //DeActivatePlayerBodies();
         //IsNextRound = true;
         SetBoardSize();
         
@@ -175,7 +175,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void EraseInActiveGameObjects()
+    public void EraseInActiveGameObjects()
     {
         for (int i = InActiveGameObjects.Count - 1; i >= 0; i--)
         {
@@ -195,7 +195,7 @@ public class GameManager : MonoBehaviour
         }
         ActivePlayerScript = PlayerScripts[PlayerIndex];
         _border.color=ActivePlayerScript.LeafMat.color;
-        //DeActivatePlayerBodies();
+        DeActivatePlayerBodies();
         _turnCounter++;
     }
 
@@ -206,25 +206,18 @@ public class GameManager : MonoBehaviour
             if (i == PlayerIndex)
             {
                 PlayerScripts[i].enabled = true;
-                foreach (var leaf in PlayerScripts[i].MyLeaves)
-                {
-                    leaf.GetComponent<BoxCollider>().enabled = true;
-                }
-                foreach (var leaf in PlayerScripts[i].MyRoots)
-                {
-                    leaf.GetComponent<BoxCollider>().enabled = true;
-                }
+                
             }
             else
             {
-                foreach(var leaf in PlayerScripts[i].MyLeaves)
-                {
-                    leaf.GetComponent<BoxCollider>().enabled = false;
-                }
-                foreach (var leaf in PlayerScripts[i].MyRoots)
-                {
-                    leaf.GetComponent<BoxCollider>().enabled = false;
-                }
+                //foreach(var leaf in PlayerScripts[i].MyLeaves)
+                //{
+                //    leaf.GetComponent<BoxCollider>().enabled = false;
+                //}
+                //foreach (var leaf in PlayerScripts[i].MyRoots)
+                //{
+                //    leaf.GetComponent<BoxCollider>().enabled = false;
+                //}
 
                 PlayerScripts[i].enabled = false;
             }

@@ -55,8 +55,10 @@ public class PlayerOneScript : MonoBehaviour
 
         //spawn 1 leaf + 1 root
         GameObject firstLeaf = Instantiate(TreeLeaf, PlayerStartPosition, Quaternion.identity);
+        firstLeaf.layer = this.gameObject.layer;
         MyLeaves.Add(firstLeaf);
         GameObject firstRoot = Instantiate(TreeRoot, PlayerStartPosition - Vector3.up, Quaternion.identity);
+        firstRoot.layer = this.gameObject.layer;
         MyRoots.Add(firstRoot);
         NotEnoughWater.enabled = false;
     }

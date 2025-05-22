@@ -46,10 +46,10 @@ public class MouseInputSystem : MonoBehaviour
         if (Physics.Raycast(_mouseClickRay, out hit, 50f))
         {
             //chopping
-            if ((hit.collider.gameObject.layer == 3) && _hasClicked && _gameManager.ActivePlayerScript.IsChopping)
+            if (_hasClicked && _gameManager.ActivePlayerScript.IsChopping && 
+                (hit.collider.gameObject.layer==_gameManager.ActivePlayerScript.gameObject.layer)) //(hit.collider.gameObject.layer == 3)
             {
                 //destroy the cube that was hit
-
                 GameObject hitCube = hit.collider.gameObject;
                 _hasClicked = false;
                 
@@ -90,7 +90,7 @@ public class MouseInputSystem : MonoBehaviour
                     _hasClicked = false;
                 }
                 //check potential
-                if ((hit.collider.gameObject.layer == 3 || hit.collider.gameObject.layer == 7) && _hasClicked)
+                if ((hit.collider.gameObject.layer == _gameManager.ActivePlayerScript.gameObject.layer) && _hasClicked)//(hit.collider.gameObject.layer == 3 || hit.collider.gameObject.layer == 7)
                 {
                     _hitCube = hit.collider.gameObject;
                     CheckOpenNeighbouringSpots(_hitCube, _potentialGrowCube);
@@ -167,6 +167,7 @@ public class MouseInputSystem : MonoBehaviour
         if (spawnObject.tag == "Leaf"||spawnObject.tag=="Root")
         {
             GameObject spawnedObject = Instantiate(spawnObject, spawnPosition, Quaternion.identity);
+            spawnedObject.layer = _gameManager.ActivePlayerScript.gameObject.layer;
             Leaves spawnedObjectScript = spawnedObject.GetComponent<Leaves>();
             if (IsOutsideBoard(spawnPosition))
             {

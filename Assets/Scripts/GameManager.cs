@@ -11,7 +11,8 @@ public class GameManager : MonoBehaviour
     public int PlayerIndex;
     public PlayerOneScript ActivePlayerScript;
     public PlayerOneScript[] PlayerScripts;
-    public List<GameObject> InActiveGameObjects = new List<GameObject>(); 
+    public List<GameObject> InActiveGameObjects = new List<GameObject>();
+    [SerializeField] private MouseInputSystem mouseInputScript;
 
     public float BoardBorder = 5f;
     public float BoardHeight = 5f;
@@ -37,8 +38,6 @@ public class GameManager : MonoBehaviour
     public float WinCondition;
     private bool _nextTurnButtonWasClicked;
 
-    public GameOverScript GameOver;
-
     void Start()
     {
         // Ensure the game starts with Player 1's camera
@@ -48,9 +47,7 @@ public class GameManager : MonoBehaviour
         //IsNextRound = true;
         SetBoardSize();
         
-        GameObject GameOverManager=GameObject.Find("GameOver Manager");
-        GameOver = GameOverManager.GetComponent<GameOverScript>();
-        GameOver.Winner = null;
+        GameOverScript.Winner = null;
     }
 
     private void SetStartConditions()
@@ -66,7 +63,6 @@ public class GameManager : MonoBehaviour
         _border.color = ActivePlayerScript.LeafMat.color;
         ActivePlayerScript.IsGrowing = true;
 
-        
     }
     
 
@@ -96,7 +92,6 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         
-
         _waterLevelPlane.transform.position =new Vector3(0, WaterLevel,0);
         _previousRound = _roundCounter;
         _previousTurn = _turnCounter;
@@ -158,13 +153,10 @@ public class GameManager : MonoBehaviour
         {
             if (player.HasWon)
             {
-                GameOver.Winner = player.gameObject;
+                GameOverScript.Winner = player.gameObject.name;
                 //save them and apoint them the winner;
-                if (IsNextRound)
-                {
-                    SceneManager.LoadScene("End Screen");
-                }
-
+                SceneManager.LoadScene("End Screen");
+                
             }
         }
     }
@@ -178,6 +170,7 @@ public class GameManager : MonoBehaviour
     {
         if (!ActivePlayerScript.HasTooLittleWater) // KeyCode.Return corresponds to the Enter key
         {
+            mouseInputScript.ErasePotentialCubes();
             UpdateActivePlayer();
         }
     }
@@ -202,7 +195,7 @@ public class GameManager : MonoBehaviour
         }
         ActivePlayerScript = PlayerScripts[PlayerIndex];
         _border.color=ActivePlayerScript.LeafMat.color;
-        DeActivatePlayerBodies();
+        //DeActivatePlayerBodies();
         _turnCounter++;
     }
 

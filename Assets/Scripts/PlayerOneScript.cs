@@ -47,6 +47,8 @@ public class PlayerOneScript : MonoBehaviour
     public bool HasWon=false;
     public int AcquiredWaterPoints;
 
+    public Text NotEnoughWater;
+
     public void SetStartConditions()
     {
         SetMyMaterial();
@@ -56,6 +58,7 @@ public class PlayerOneScript : MonoBehaviour
         MyLeaves.Add(firstLeaf);
         GameObject firstRoot = Instantiate(TreeRoot, PlayerStartPosition - Vector3.up, Quaternion.identity);
         MyRoots.Add(firstRoot);
+        NotEnoughWater.enabled = false;
     }
 
     private void SetMyMaterial()
@@ -123,7 +126,7 @@ public class PlayerOneScript : MonoBehaviour
 
         if (_gameManager.IsNewTurn)
         {
-            if ((WaterPoints - LeafCount) < 0)
+            if ((WaterPoints - LeafCount) < 0) // account for shadowed cubes and such
             {
                 HasTooLittleWater = true;
                 _feedbackWriter.IsVisualizing = true;
@@ -147,13 +150,15 @@ public class PlayerOneScript : MonoBehaviour
         {
             IsChopping = true;
             _growButtonImage.color = Color.red;
+            NotEnoughWater.enabled = true;
         }
 
         //reset waterpoints after chopping enough leaves
-        if (HasTooLittleWater && ((WaterPoints - LeafCount) >= 0))
+        if (HasTooLittleWater && ((WaterPoints - LeafCount) >= 0))// recalculate the waterpoints amount
         {
             HasTooLittleWater = false;
             SubtractWaterPoints();
+            NotEnoughWater.enabled = false;
             //WaterPoints -= LeafCount;
             _gameManager.UpdateActivePlayer();
         }
@@ -161,7 +166,7 @@ public class PlayerOneScript : MonoBehaviour
         if (!HasTooLittleWater && _gameManager.IsNewTurn)
         {
             SubtractWaterPoints();
-            
+            NotEnoughWater.enabled = false;
             //WaterPoints -= LeafCount;
             _growButtonImage.color = Color.green;
         }

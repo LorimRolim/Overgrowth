@@ -413,6 +413,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4358010859442717717, guid: a49d8d40245d7c84ebedf69df0f70f4f, type: 3}
     - target: {fileID: 6191062863399857097, guid: 5f1ed16c49298be479844a44cbe7ac4b, type: 3}
+      propertyPath: NotEnoughWater
+      value: 
+      objectReference: {fileID: 1747595265}
+    - target: {fileID: 6191062863399857097, guid: 5f1ed16c49298be479844a44cbe7ac4b, type: 3}
       propertyPath: WaterPointsText
       value: 
       objectReference: {fileID: 886020998}
@@ -879,7 +883,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1484770831878851871, guid: 13f4b4a32768e03498e25eff125c0b05, type: 3}
       propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1484770831878851871, guid: 13f4b4a32768e03498e25eff125c0b05, type: 3}
+      propertyPath: m_ScreenMatchMode
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1484770831878851871, guid: 13f4b4a32768e03498e25eff125c0b05, type: 3}
+      propertyPath: m_MatchWidthOrHeight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1484770831878851871, guid: 13f4b4a32768e03498e25eff125c0b05, type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 800
+      objectReference: {fileID: 0}
+    - target: {fileID: 1484770831878851871, guid: 13f4b4a32768e03498e25eff125c0b05, type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: 671
+      objectReference: {fileID: 0}
+    - target: {fileID: 1484770831878851871, guid: 13f4b4a32768e03498e25eff125c0b05, type: 3}
+      propertyPath: m_ReferencePixelsPerUnit
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 2015566114578647511, guid: 13f4b4a32768e03498e25eff125c0b05, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -1056,6 +1080,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7815427040245945783, guid: 13f4b4a32768e03498e25eff125c0b05, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1300462127}
+    - targetCorrespondingSourceObject: {fileID: 7815427040245945783, guid: 13f4b4a32768e03498e25eff125c0b05, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1747595264}
     - targetCorrespondingSourceObject: {fileID: 7815427040245945783, guid: 13f4b4a32768e03498e25eff125c0b05, type: 3}
       insertIndex: -1
       addedObject: {fileID: 677148153}
@@ -1331,6 +1358,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4358010859442717717, guid: a49d8d40245d7c84ebedf69df0f70f4f, type: 3}
     - target: {fileID: 6191062863399857097, guid: 5f1ed16c49298be479844a44cbe7ac4b, type: 3}
+      propertyPath: NotEnoughWater
+      value: 
+      objectReference: {fileID: 1747595265}
+    - target: {fileID: 6191062863399857097, guid: 5f1ed16c49298be479844a44cbe7ac4b, type: 3}
       propertyPath: WaterPointsText
       value: 
       objectReference: {fileID: 886020998}
@@ -1463,14 +1494,14 @@ RectTransform:
   m_GameObject: {fileID: 967613731}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 10, y: 6, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 671737100}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -89, y: -127}
+  m_AnchoredPosition: {x: -412, y: -92}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &967613733
@@ -1493,7 +1524,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 0fed0aaa6de3dc6449679b3869c6465a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a8a6d7a1dafe3244d888ff8f52922fbe, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1763,14 +1794,14 @@ RectTransform:
   m_GameObject: {fileID: 1178122322}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 20, y: 15, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 671737100}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 307, y: -323}
+  m_AnchoredPosition: {x: -406.1, y: -198.2}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1178122324
@@ -1793,7 +1824,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: caa623cb580c34e4cb54c4a7e12dab0c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 068b5c27ae0bcb943a7d8e8ed5060970, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1911,6 +1942,10 @@ PrefabInstance:
       propertyPath: _rootRenderer
       value: 
       objectReference: {fileID: 4358010859442717717, guid: a49d8d40245d7c84ebedf69df0f70f4f, type: 3}
+    - target: {fileID: 6191062863399857097, guid: 5f1ed16c49298be479844a44cbe7ac4b, type: 3}
+      propertyPath: NotEnoughWater
+      value: 
+      objectReference: {fileID: 1747595265}
     - target: {fileID: 6191062863399857097, guid: 5f1ed16c49298be479844a44cbe7ac4b, type: 3}
       propertyPath: WaterPointsText
       value: 
@@ -2196,14 +2231,14 @@ RectTransform:
   m_GameObject: {fileID: 1283515071}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 15, y: 10, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 671737100}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 96, y: -65}
+  m_AnchoredPosition: {x: -408, y: 13}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1283515073
@@ -2226,7 +2261,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 0e2881d193ebc6446972040d1bfa8221, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 195fb118e51f669448285d902e9fa379, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2572,7 +2607,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1546071597}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -2588,7 +2623,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 577f7f0f2d442da46a01d9bfcce9f60e, type: 2}
+  - {fileID: 2100000, guid: da667556b3740a641b6376fd5259842d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2733,6 +2768,10 @@ PrefabInstance:
       propertyPath: _rootRenderer
       value: 
       objectReference: {fileID: 4358010859442717717, guid: a49d8d40245d7c84ebedf69df0f70f4f, type: 3}
+    - target: {fileID: 6191062863399857097, guid: 5f1ed16c49298be479844a44cbe7ac4b, type: 3}
+      propertyPath: NotEnoughWater
+      value: 
+      objectReference: {fileID: 1747595265}
     - target: {fileID: 6191062863399857097, guid: 5f1ed16c49298be479844a44cbe7ac4b, type: 3}
       propertyPath: WaterPointsText
       value: 
@@ -3027,6 +3066,85 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1686817812}
   m_CullTransparentMesh: 1
+--- !u!1 &1747595263
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1747595264}
+  - component: {fileID: 1747595266}
+  - component: {fileID: 1747595265}
+  m_Layer: 5
+  m_Name: TooLittleWater
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1747595264
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1747595263}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 671737100}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 397, y: 224}
+  m_SizeDelta: {x: 231.8, y: 69.96}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1747595265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1747595263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 19
+    m_FontStyle: 1
+    m_BestFit: 0
+    m_MinSize: 10
+    m_MaxSize: 40
+    m_Alignment: 0
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: "Not enough water \nso chop some of your leaves"
+--- !u!222 &1747595266
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1747595263}
+  m_CullTransparentMesh: 1
 --- !u!1 &1747823208
 GameObject:
   m_ObjectHideFlags: 0
@@ -3301,6 +3419,114 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1797699088}
   m_CullTransparentMesh: 1
+--- !u!1 &2006252569
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2006252573}
+  - component: {fileID: 2006252572}
+  - component: {fileID: 2006252571}
+  - component: {fileID: 2006252570}
+  m_Layer: 0
+  m_Name: Cube
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!65 &2006252570
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2006252569}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &2006252571
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2006252569}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 577f7f0f2d442da46a01d9bfcce9f60e, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &2006252572
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2006252569}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &2006252573
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2006252569}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.6405451, y: 2.89, z: 0.7286439}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2748246472057512069
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3412,3 +3638,4 @@ SceneRoots:
   - {fileID: 1192363543}
   - {fileID: 1556237991}
   - {fileID: 1267674449}
+  - {fileID: 2006252573}

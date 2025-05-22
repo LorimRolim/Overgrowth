@@ -33,7 +33,7 @@ public class MouseInputSystem : MonoBehaviour
         }
         if(Input.GetKeyDown(KeyCode.Escape))
         {
-            EraseListElements();
+            ErasePotentialCubes();
         }
     }
 
@@ -56,12 +56,14 @@ public class MouseInputSystem : MonoBehaviour
                 _gameManager.InActiveGameObjects.Add(hitCube);
                 _gameManager.ActivePlayerScript.MyLeaves.Remove(hitCube);
             }
+
+            //growing
             if (_gameManager.ActivePlayerScript.IsGrowing)
             {
                 //grow a leaf or root
                 if ((hit.collider.gameObject.layer == 6) && _hasClicked)
                 {
-                    EraseListElements();
+                    ErasePotentialCubes();
 
                     GameObject hitCube = hit.collider.gameObject;
                     if (hitCube.transform.position.y - 0.5f < 0)
@@ -101,7 +103,7 @@ public class MouseInputSystem : MonoBehaviour
     }
 
    
-    private void EraseListElements()
+    public void ErasePotentialCubes()
     {
         for (int i = _gameManager.ActivePlayerScript.MyPotentialGrowCubes.Count - 1; i >= 0; i--)
         {
@@ -192,7 +194,7 @@ public class MouseInputSystem : MonoBehaviour
 
     private bool IsOutsideBoard(Vector3 spawnPosition)
     {
-        if((spawnPosition.x > _gameManager.BoardBorder) || (spawnPosition.y > _gameManager.BoardHeight) || (spawnPosition.z > _gameManager.BoardBorder))
+        if((spawnPosition.x > _gameManager.BoardBorder)  || (spawnPosition.z > _gameManager.BoardBorder))// || (spawnPosition.y > _gameManager.BoardHeight)
         {
             return true;
         }

@@ -37,6 +37,8 @@ public class GameManager : MonoBehaviour
 
     public float WinCondition;
     private bool _nextTurnButtonWasClicked;
+    [SerializeField] private ParticleSystem _rainParticles;
+     private ParticleSystem _rainParticlesInstance;
 
     void Start()
     {
@@ -62,7 +64,6 @@ public class GameManager : MonoBehaviour
         ActivePlayerScript.SunLightPoints = 1;
         _border.color = ActivePlayerScript.LeafMat.color;
         ActivePlayerScript.IsGrowing = true;
-
     }
     
 
@@ -143,6 +144,7 @@ public class GameManager : MonoBehaviour
         {
             _roundCounter = 0;
             WaterLevel += Random.Range(0.5f,2);
+            _rainParticlesInstance=Instantiate(_rainParticles);
         }
 
         //erase
@@ -170,7 +172,7 @@ public class GameManager : MonoBehaviour
     {
         if (!ActivePlayerScript.HasTooLittleWater) // KeyCode.Return corresponds to the Enter key
         {
-            mouseInputScript.ErasePotentialCubes();
+            
             UpdateActivePlayer();
         }
     }
@@ -186,7 +188,7 @@ public class GameManager : MonoBehaviour
 
     public void UpdateActivePlayer()
     {
-        
+        mouseInputScript.ErasePotentialCubes();
         PlayerIndex++;
         
         if (PlayerIndex > PlayerScripts.Length - 1)

@@ -128,7 +128,7 @@ public class PlayerOneScript : MonoBehaviour
 
         if (_gameManager.IsNewTurn)
         {
-            if ((WaterPoints - LeafCount) < 0) // account for shadowed cubes and such
+            if (CalculateHasTooLittleWater()) // account for shadowed cubes and such (WaterPoints - LeafCount) < 0
             {
                 HasTooLittleWater = true;
                 _feedbackWriter.IsVisualizing = true;
@@ -141,7 +141,7 @@ public class PlayerOneScript : MonoBehaviour
                 _feedbackWriter.LeafsAdded = "0";
                 _feedbackWriter.LeafSign = "+";
             }
-            else
+            if(!CalculateHasTooLittleWater()) 
             {
                 HasTooLittleWater = false;
             }
@@ -155,15 +155,7 @@ public class PlayerOneScript : MonoBehaviour
             NotEnoughWater.enabled = true;
         }
 
-        //reset waterpoints after chopping enough leaves
-        if (HasTooLittleWater && ((WaterPoints - LeafCount) >= 0))// recalculate the waterpoints amount
-        {
-            HasTooLittleWater = false;
-            SubtractWaterPoints();
-            NotEnoughWater.enabled = false;
-            //WaterPoints -= LeafCount;
-            _gameManager.UpdateActivePlayer();
-        }
+        
 
         if (!HasTooLittleWater && _gameManager.IsNewTurn)
         {
@@ -176,11 +168,25 @@ public class PlayerOneScript : MonoBehaviour
         {
             HasWon = true;
         }
+        if (WaterPoints<0)
+        {
+            WaterPoints = 0;
+        }
         //Update UI points
         _acquiredSunlightPoints = 0;
         SunPointsText.text = SunLightPoints.ToString();
         WaterPointsText.text = WaterPoints.ToString();
         LeafCountText.text = LeafCount.ToString();
+        //reset waterpoints after chopping enough leaves
+        if (HasTooLittleWater && !CalculateHasTooLittleWater())// recalculate the waterpoints amount
+        {
+            HasTooLittleWater = false;
+            SubtractWaterPoints();
+            NotEnoughWater.enabled = false;
+            //WaterPoints -= LeafCount;
+            _gameManager.UpdateActivePlayer();
+            _growButtonImage.color = Color.green;
+        }
     }
 
     private void SubtractWaterPoints()
@@ -190,6 +196,27 @@ public class PlayerOneScript : MonoBehaviour
             Leaves leafScript = leaf.GetComponent<Leaves>();
             WaterPoints -= 1 * leafScript.ShadowMultiplier;
         }
+    }
+
+    private bool CalculateHasTooLittleWater()
+    {
+        int leafCount = 0;
+        foreach (var leaf in _gameManager.ActivePlayerScript.MyLeaves)
+        {
+            Leaves leafScript = leaf.GetComponent<Leaves>();
+
+            leafCount += 1 * leafScript.ShadowMultiplier;
+        }
+        if (leafCount > WaterPoints)
+        {
+            return true;
+        }
+        if (leafCount < WaterPoints)
+        {
+            return false;
+        }
+        return false;
+
     }
 
     private void CalculateAcquiredSunPoints(Leaves leafScript)

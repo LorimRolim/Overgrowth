@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -80,6 +81,7 @@ public class PlayerOneScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
 
         _feedbackWriter=GetComponent<WriteFeedbackOnScreen>();
 
@@ -153,6 +155,21 @@ public class PlayerOneScript : MonoBehaviour
         }
 
         CalculateLeafRootCounts();
+
+        //die if no leaves
+        if (LeafCount == 0)
+        {
+            for( int i=_gameManager.PlayerScripts.Count-1;i>=0;i--)
+            {
+                if (_gameManager.PlayerScripts[i] == this)
+                {
+                    _gameManager.PlayerScripts.RemoveAt(i);
+                }
+                
+            }
+            
+            Destroy(this.gameObject);
+        }
 
         //calculate if enough water
         if (_gameManager.IsNewTurn)

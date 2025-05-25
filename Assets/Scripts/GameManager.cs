@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
 {
     public int PlayerIndex;
     public PlayerOneScript ActivePlayerScript;
-    public PlayerOneScript[] PlayerScripts;
+    public List<PlayerOneScript> PlayerScripts;
     public List<GameObject> InActiveGameObjects = new List<GameObject>();
     [SerializeField] private MouseInputSystem mouseInputScript;
 
@@ -110,7 +110,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-
+        ActivePlayerScript = PlayerScripts[PlayerIndex];
         SetOtherPlayerLayerMask();
         Debug.Log(Convert.ToString(OtherPlayers, 2).PadLeft(32, '0'));
 
@@ -139,7 +139,7 @@ public class GameManager : MonoBehaviour
         }
         
 
-        if (_turnCounter >= PlayerScripts.Length) //next round
+        if (_turnCounter >= PlayerScripts.Count) //next round
         {
             //SetAllPlayersActive();
             
@@ -167,7 +167,7 @@ public class GameManager : MonoBehaviour
         if (_roundCounter == RainFallTime)
         {
             _roundCounter = 0;
-            WaterLevel += UnityEngine.Random.Range(0.5f,2);
+            WaterLevel += UnityEngine.Random.Range(0.5f,1);
             _rainParticlesInstance=Instantiate(_rainParticles);
         }
 
@@ -236,7 +236,7 @@ public class GameManager : MonoBehaviour
         mouseInputScript.ErasePotentialCubes();
         PlayerIndex++;
         
-        if (PlayerIndex > PlayerScripts.Length - 1)
+        if (PlayerIndex > PlayerScripts.Count)
         {
             PlayerIndex = 0;
         }

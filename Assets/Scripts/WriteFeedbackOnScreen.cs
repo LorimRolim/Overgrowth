@@ -53,7 +53,7 @@ public class WriteFeedbackOnScreen : MonoBehaviour
         }
         if (VisualizationTimer > VisualizationTime)
         {
-            VisualizationTime = 0;
+            VisualizationTimer = 0;
 
             SunlightAdder.enabled = false;
             WaterPointsAdder.enabled = false;

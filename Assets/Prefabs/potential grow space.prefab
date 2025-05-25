@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1677944077370761068}
   - component: {fileID: 2072704751114760757}
   - component: {fileID: 1434469586543375251}
+  - component: {fileID: 4072906633121886544}
   m_Layer: 6
   m_Name: potential grow space
   m_TagString: PotentialCube
@@ -108,3 +109,17 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4072906633121886544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 223424683313799555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d454d9d7dd7eb054dbf86cf9ff6dcfd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsTouchingLeaf: 0
+  LeafTouching: {fileID: 0}

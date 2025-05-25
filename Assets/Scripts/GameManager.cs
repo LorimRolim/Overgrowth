@@ -1,7 +1,8 @@
 
 
+using System;
 using System.Collections.Generic;
-using UnityEditor;
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -20,6 +21,14 @@ public class GameManager : MonoBehaviour
     
     public float WaterDepletingAmount = 0.02f;
     [SerializeField] private GameObject _waterLevelPlane;
+
+    [Header("color of ui")]
+    [SerializeField] private Image _sunlightPointColor;
+    [SerializeField] private Image _waterPointColor;
+    [SerializeField] private Image _leafCountColor;
+    [SerializeField] private Image _shadowLeavesColor;
+    [SerializeField] private Image _rootsColor;
+    [SerializeField] private Image _nextTurnColor;
     [SerializeField] private Image _border;
 
     public bool IsNextRound=false;
@@ -36,9 +45,16 @@ public class GameManager : MonoBehaviour
     public int RainFallTime=6;
 
     public float WinCondition;
-    private bool _nextTurnButtonWasClicked;
+    public bool NextTurnButtonWasClicked;
     [SerializeField] private ParticleSystem _rainParticles;
-     private ParticleSystem _rainParticlesInstance;
+    private ParticleSystem _rainParticlesInstance;
+
+    [Header("cursor textures")]
+    [SerializeField] private Texture2D _growCursorsprite;
+    [SerializeField] private Texture2D _chopCursorsprite;
+    private Vector2 _chopHotSpot=new Vector2(9f,97f);
+    private Vector2 _growHotSpot=new Vector2(38f,1f);
+    public LayerMask OtherPlayers;
 
     void Start()
     {
@@ -62,7 +78,9 @@ public class GameManager : MonoBehaviour
         PlayerScripts[3].enabled = false;
         ActivePlayerScript.WaterPoints = 1;
         ActivePlayerScript.SunLightPoints = 1;
-        _border.color = ActivePlayerScript.LeafMat.color;
+
+        SetColorsUI();
+
         ActivePlayerScript.IsGrowing = true;
     }
     
@@ -92,26 +110,32 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        
+
+        SetOtherPlayerLayerMask();
+        Debug.Log(Convert.ToString(OtherPlayers, 2).PadLeft(32, '0'));
+
         _waterLevelPlane.transform.position =new Vector3(0, WaterLevel,0);
         _previousRound = _roundCounter;
         _previousTurn = _turnCounter;
         
         if (ActivePlayerScript.IsChopping)
         {
+            Cursor.SetCursor(_chopCursorsprite, _chopHotSpot,CursorMode.Auto);
             ActivePlayerScript.IsGrowing = false;
+
         }
         if (ActivePlayerScript.IsGrowing)
         {
+            Cursor.SetCursor(_growCursorsprite, _growHotSpot, CursorMode.Auto);
             ActivePlayerScript.IsChopping = false;
         }
 
         //OnClickNextTurn();
 
-        if (_nextTurnButtonWasClicked)
+        if (NextTurnButtonWasClicked)
         {
             NextTurnButton();
-            _nextTurnButtonWasClicked = false;
+            NextTurnButtonWasClicked = false;
         }
         
 
@@ -143,7 +167,7 @@ public class GameManager : MonoBehaviour
         if (_roundCounter == RainFallTime)
         {
             _roundCounter = 0;
-            WaterLevel += Random.Range(0.5f,2);
+            WaterLevel += UnityEngine.Random.Range(0.5f,2);
             _rainParticlesInstance=Instantiate(_rainParticles);
         }
 
@@ -163,9 +187,30 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void SetOtherPlayerLayerMask()
+    {
+        if (ActivePlayerScript.gameObject.layer == 9)
+        {
+            OtherPlayers = (0 << 9) | (1 << 11) | (1 << 12) | (1 << 10);
+        }
+        if (ActivePlayerScript.gameObject.layer == 10)
+        {
+            OtherPlayers = (1 << 9) | (1 << 11) | (1 << 12) | (0 << 10);
+        }
+        if (ActivePlayerScript.gameObject.layer == 11)
+        {
+            OtherPlayers = (1 << 9) | (0 << 11) | (1 << 12) | (1 << 10);
+        }
+        if (ActivePlayerScript.gameObject.layer == 12)
+        {
+            OtherPlayers = (1 << 9) | (1 << 11) | (0 << 12) | (1 << 10);
+        }
+
+    }
+
     public void OnClickNextTurn()
     {
-        _nextTurnButtonWasClicked=true;
+        NextTurnButtonWasClicked=true;
     }
 
     private void NextTurnButton()
@@ -196,9 +241,21 @@ public class GameManager : MonoBehaviour
             PlayerIndex = 0;
         }
         ActivePlayerScript = PlayerScripts[PlayerIndex];
-        _border.color=ActivePlayerScript.LeafMat.color;
+        SetColorsUI();
         DeActivatePlayerBodies();
         _turnCounter++;
+        IsNewTurn = true;
+    }
+
+    private void SetColorsUI()
+    {
+        _border.color = ActivePlayerScript.LeafMat.color;
+        _leafCountColor.color = ActivePlayerScript.LeafMat.color;
+        _nextTurnColor.color = ActivePlayerScript.LeafMat.color;
+        _shadowLeavesColor.color = ActivePlayerScript.LeafMat.color;
+        _sunlightPointColor.color = ActivePlayerScript.LeafMat.color;
+        _waterPointColor.color = ActivePlayerScript.LeafMat.color;
+        _rootsColor.color = ActivePlayerScript.LeafMat.color;
     }
 
     public void DeActivatePlayerBodies()
@@ -212,15 +269,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                //foreach(var leaf in PlayerScripts[i].MyLeaves)
-                //{
-                //    leaf.GetComponent<BoxCollider>().enabled = false;
-                //}
-                //foreach (var leaf in PlayerScripts[i].MyRoots)
-                //{
-                //    leaf.GetComponent<BoxCollider>().enabled = false;
-                //}
-
+               
                 PlayerScripts[i].enabled = false;
             }
         }

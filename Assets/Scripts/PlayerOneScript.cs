@@ -1,5 +1,4 @@
-using NUnit.Framework;
-using System;
+
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,10 +21,14 @@ public class PlayerOneScript : MonoBehaviour
     public int SunLightPoints;
     public int WaterPoints;
     public int LeafCount;
+    public int RootCount;
+    public int ShadowLeafCount;
 
     public Text SunPointsText; // Reference to the Text component in the Canvas
     public Text WaterPointsText; // Reference to the Text component in the Canvas
     public Text LeafCountText; // Reference to the Text component in the Canvas
+    public Text RootCountText;
+    public Text ShadowLeavesCountText;
 
     public Vector3 PlayerStartPosition;
 
@@ -46,8 +49,13 @@ public class PlayerOneScript : MonoBehaviour
 
     public bool HasWon=false;
     public int AcquiredWaterPoints;
+    public int SubtractedWaterPoints;
 
     public Text NotEnoughWater;
+
+    public bool HasAlgea;
+    [SerializeField] private Image _algeaImage;
+
 
     public void SetStartConditions()
     {
@@ -72,41 +80,58 @@ public class PlayerOneScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         _feedbackWriter=GetComponent<WriteFeedbackOnScreen>();
 
-        LeafCount=MyLeaves.Count;
-        
+        //reset waterpoints after chopping enough leaves
+        if (HasAlgea)
+        {
+            _algeaImage.color = LeafMat.color;
+        }
+        else
+        {
+            _algeaImage.color = Color.gray;
+        }
+
         //CalculateWaterPoints();
         if (SunLightPoints <= 0)
         {
             IsGrowing = false;
         }
-        if (_gameManager.IsNewTurn)
-        {
-            IsGrowing = true;
-        }
 
-        foreach (var leaf in MyLeaves)
+        for (int i = MyLeaves.Count - 1; i >= 0; i--)
         {
-            leaf.GetComponent<MeshRenderer>().material = LeafMat;
-            
-            Leaves leafScript = leaf.GetComponent<Leaves>();
-
+            if (MyLeaves[i] == null)
+            {
+                MyLeaves.RemoveAt(i);
+                continue;
+            }
+            MyLeaves[i].GetComponent<MeshRenderer>().material = LeafMat;
+            Leaves leafScript = MyLeaves[i].GetComponent<Leaves>();
             leafScript.CheckIfInShadow();
             if (_gameManager.IsNewTurn)
             {
                 CalculateAcquiredSunPoints(leafScript);
-                _feedbackWriter.IsVisualizing = true;
-                _feedbackWriter.SunlightPoints = _acquiredSunlightPoints;
-                _feedbackWriter.SunlightSign = "+";
-
-                _feedbackWriter.WaterPoints = 0;
-                _feedbackWriter.WaterSign = "+";
-
-                _feedbackWriter.LeafsAdded = "0";
-                _feedbackWriter.LeafSign = "+";
             }
         }
+
+            //iterate all my leaves and roots get sunpoints, waterpoints
+        //foreach (var leaf in MyLeaves)
+        //{
+        //    if (leaf == null)
+        //    {
+        //        MyLeaves.Remove(leaf);
+        //    }
+        //    leaf.GetComponent<MeshRenderer>().material = LeafMat;
+            
+        //    Leaves leafScript = leaf.GetComponent<Leaves>();
+
+        //    leafScript.CheckIfInShadow();
+        //    if (_gameManager.IsNewTurn)
+        //    {
+        //        CalculateAcquiredSunPoints(leafScript);
+        //    }
+        //}
         foreach (var root in MyRoots)
         {
             root.GetComponent<MeshRenderer>().material = _rootMat;
@@ -114,32 +139,29 @@ public class PlayerOneScript : MonoBehaviour
             if (_gameManager.IsNewTurn)
             {
                 rootScript.GiveWaterpoints();
-                _feedbackWriter.IsVisualizing = true;
-                _feedbackWriter.SunlightPoints = 0;
-                _feedbackWriter.SunlightSign = "+";
-
-                _feedbackWriter.WaterPoints = AcquiredWaterPoints;
-                _feedbackWriter.WaterSign = "+";
-
-                _feedbackWriter.LeafsAdded = "0";
-                _feedbackWriter.LeafSign = "+";
             }
         }
 
+        if (HasTooLittleWater && !CalculateHasTooLittleWater())// recalculate the waterpoints amount
+        {
+            HasTooLittleWater = false;
+            SubtractWaterPoints();
+            NotEnoughWater.enabled = false;
+            _gameManager.NextTurnButtonWasClicked = true;
+            //_gameManager.UpdateActivePlayer();
+            _growButtonImage.color = Color.green;
+        }
+
+        CalculateLeafRootCounts();
+
+        //calculate if enough water
         if (_gameManager.IsNewTurn)
         {
+            IsGrowing = true;
             if (CalculateHasTooLittleWater()) // account for shadowed cubes and such (WaterPoints - LeafCount) < 0
             {
                 HasTooLittleWater = true;
-                _feedbackWriter.IsVisualizing = true;
-                _feedbackWriter.SunlightPoints = 0;
-                _feedbackWriter.SunlightSign = "+";
-
-                _feedbackWriter.WaterPoints = LeafCount;
-                _feedbackWriter.WaterSign = "-";
-
-                _feedbackWriter.LeafsAdded = "0";
-                _feedbackWriter.LeafSign = "+";
+                
             }
             if(!CalculateHasTooLittleWater()) 
             {
@@ -155,15 +177,19 @@ public class PlayerOneScript : MonoBehaviour
             NotEnoughWater.enabled = true;
         }
 
-        
-
+        //if enough water subtract waterpoints
         if (!HasTooLittleWater && _gameManager.IsNewTurn)
         {
             SubtractWaterPoints();
             NotEnoughWater.enabled = false;
-            //WaterPoints -= LeafCount;
+            
+        }
+        if (IsGrowing)
+        {
             _growButtonImage.color = Color.green;
         }
+
+        //wincondition
         if (_acquiredSunlightPoints >= _gameManager.WinCondition)
         {
             HasWon = true;
@@ -173,19 +199,57 @@ public class PlayerOneScript : MonoBehaviour
             WaterPoints = 0;
         }
         //Update UI points
+        
+        if (_gameManager.IsNewTurn)
+        {
+            WriteGainedPointsToUI();
+        }
+
         _acquiredSunlightPoints = 0;
+        AcquiredWaterPoints = 0;
+        SubtractedWaterPoints = 0;
+
         SunPointsText.text = SunLightPoints.ToString();
         WaterPointsText.text = WaterPoints.ToString();
         LeafCountText.text = LeafCount.ToString();
-        //reset waterpoints after chopping enough leaves
-        if (HasTooLittleWater && !CalculateHasTooLittleWater())// recalculate the waterpoints amount
+        RootCountText.text = RootCount.ToString();
+        ShadowLeavesCountText.text=ShadowLeafCount.ToString();
+    }
+
+    private void WriteGainedPointsToUI()
+    {
+        _feedbackWriter.IsVisualizing = true;
+        _feedbackWriter.SunlightPoints = _acquiredSunlightPoints;
+        _feedbackWriter.SunlightSign = "+";
+
+        _feedbackWriter.WaterPoints = SubtractedWaterPoints;
+        _feedbackWriter.WaterSign = "";
+
+        _feedbackWriter.LeafsAdded = "0";
+        _feedbackWriter.LeafSign = "+";
+    }
+
+    private void CalculateLeafRootCounts()
+    {
+        ShadowLeafCount = 0;
+        LeafCount = 0;
+        RootCount = 0;
+        
+        foreach(var root in MyRoots)
         {
-            HasTooLittleWater = false;
-            SubtractWaterPoints();
-            NotEnoughWater.enabled = false;
-            //WaterPoints -= LeafCount;
-            _gameManager.UpdateActivePlayer();
-            _growButtonImage.color = Color.green;
+            RootCount++;
+        }
+
+        foreach (var leaf in MyLeaves)
+        {
+            if (leaf.GetComponent<Leaves>().IsInShadowed)
+            {
+                ShadowLeafCount++;
+            }
+            else
+            {
+                LeafCount++;
+            }
         }
     }
 
@@ -195,6 +259,7 @@ public class PlayerOneScript : MonoBehaviour
         {
             Leaves leafScript = leaf.GetComponent<Leaves>();
             WaterPoints -= 1 * leafScript.ShadowMultiplier;
+            SubtractedWaterPoints -= 1 * leafScript.ShadowMultiplier;
         }
     }
 

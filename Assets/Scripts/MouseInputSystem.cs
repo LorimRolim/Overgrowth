@@ -1,8 +1,9 @@
-using System;
+
 using System.Collections.Generic;
-using System.Net;
-using Unity.VisualScripting;
+
+
 using UnityEngine;
+
 
 public class MouseInputSystem : MonoBehaviour
 {
@@ -12,10 +13,8 @@ public class MouseInputSystem : MonoBehaviour
     [SerializeField] private GameObject _treeLeaves;
     [SerializeField] private GameObject _potentialGrowCube;
     [SerializeField] private GameManager _gameManager;
-
+    
     [SerializeField] private WriteFeedbackOnScreen _feedbackWriter;
-
-
 
     private bool _hasClicked=false;
     
@@ -23,7 +22,7 @@ public class MouseInputSystem : MonoBehaviour
     void Update()
     {
         _feedbackWriter = GetComponent<WriteFeedbackOnScreen>();
-
+        
         if (Input.GetMouseButtonDown(0))
         {
             _hasClicked = true;
@@ -36,8 +35,6 @@ public class MouseInputSystem : MonoBehaviour
             ErasePotentialCubes();
         }
     }
-
-    
 
     private void CheckRayCollisions()
     {
@@ -63,6 +60,7 @@ public class MouseInputSystem : MonoBehaviour
                 //grow a leaf or root
                 if ((hit.collider.gameObject.layer == 6) && _hasClicked)
                 {
+                    
                     ErasePotentialCubes();
 
                     GameObject hitCube = hit.collider.gameObject;
@@ -73,7 +71,15 @@ public class MouseInputSystem : MonoBehaviour
                     }
                     if (hitCube.transform.position.y - 0.5f >= 0)
                     {
+                        PotentialCubeScript hitCubeScript=hitCube.GetComponent<PotentialCubeScript>();
+                        if (hitCubeScript.IsTouchingLeaf)
+                        {
+                            _gameManager.ActivePlayerScript.WaterPoints -= 1;
+                            Destroy(hitCubeScript.LeafTouching);
+                        }
                         GameObject spawnedObject = FillOpenSpot(hitCube.transform.position, Vector3.zero, _gameManager.ActivePlayerScript.TreeLeaf, _gameManager.ActivePlayerScript.MyLeaves);
+
+
                         _feedbackWriter.IsVisualizing = true;
                         _feedbackWriter.SunlightPoints = 1;
                         _feedbackWriter.SunlightSign = "-";
@@ -85,7 +91,6 @@ public class MouseInputSystem : MonoBehaviour
                         _feedbackWriter.LeafSign = "+";
 
                     }
-
                     //Destroy(hitCube);
                     _hasClicked = false;
                 }
@@ -97,9 +102,7 @@ public class MouseInputSystem : MonoBehaviour
                     _hasClicked = false;
                 }
             }
-            
         }
-        
     }
 
    
@@ -114,47 +117,39 @@ public class MouseInputSystem : MonoBehaviour
 
     private void CheckOpenNeighbouringSpots(GameObject hitCube,GameObject spawnObject)
     {
+        
+
+        //checkone collisions
+        CheckWhoWeCollidingWith(hitCube,spawnObject,Vector3.up);
+        CheckWhoWeCollidingWith(hitCube, spawnObject,Vector3.down);
+        CheckWhoWeCollidingWith(hitCube,spawnObject,Vector3.right);
+        CheckWhoWeCollidingWith(hitCube,spawnObject,Vector3.left);
+        CheckWhoWeCollidingWith(hitCube, spawnObject, Vector3.forward);
+        CheckWhoWeCollidingWith(hitCube, spawnObject, Vector3.back);
+
+    }
+
+    private void CheckWhoWeCollidingWith(GameObject hitCube, GameObject spawnObject, Vector3 up)
+    {
         RaycastHit hit;
-        if (!Physics.Raycast(hitCube.transform.position, Vector3.up,out hit ,1f)) //up
+        if (!Physics.Raycast(hitCube.transform.position, up, out hit, 1f)) //up if not
         {
             if (hit.collider == null)
             {
-                FillOpenSpot(hitCube.transform.position,Vector3.up,spawnObject, _gameManager.ActivePlayerScript.MyPotentialGrowCubes);
+                FillOpenSpot(hitCube.transform.position, up, spawnObject, _gameManager.ActivePlayerScript.MyPotentialGrowCubes);
             }
         }
-        if (!Physics.Raycast(hitCube.transform.position, Vector3.right, out hit, 1f)) //right
+        if (Physics.Raycast(hitCube.transform.position, up, out hit, 1f)
+            && _gameManager.ActivePlayerScript.HasAlgea)
         {
-            if (hit.collider == null)
+            if (hit.collider.tag == "Leaf")
             {
-                FillOpenSpot(hitCube.transform.position, Vector3.right, spawnObject, _gameManager.ActivePlayerScript.MyPotentialGrowCubes);
-            }
-        }
-        if (!Physics.Raycast(hitCube.transform.position, -Vector3.right, out hit, 1f)) //left
-        {
-            if (hit.collider == null)
-            {
-                FillOpenSpot(hitCube.transform.position, -Vector3.right, spawnObject, _gameManager.ActivePlayerScript.MyPotentialGrowCubes);
-            }
-        }
-        if (!Physics.Raycast(hitCube.transform.position, -Vector3.up, out hit, 1f)) //down
-        {
-            if (hit.collider == null)
-            {
-                FillOpenSpot(hitCube.transform.position, -Vector3.up, spawnObject, _gameManager.ActivePlayerScript.MyPotentialGrowCubes);
-            }
-        }
-        if (!Physics.Raycast(hitCube.transform.position, Vector3.forward, out hit, 1f)) //forward
-        {
-            if (hit.collider == null)
-            {
-                FillOpenSpot(hitCube.transform.position, Vector3.forward, spawnObject, _gameManager.ActivePlayerScript.MyPotentialGrowCubes);
-            }
-        }
-        if (!Physics.Raycast(hitCube.transform.position, -Vector3.forward, out hit, 1f)) //backward
-        {
-            if (hit.collider == null)
-            {
-                FillOpenSpot(hitCube.transform.position, -Vector3.forward, spawnObject, _gameManager.ActivePlayerScript.MyPotentialGrowCubes);
+                if (_gameManager.ActivePlayerScript.HasAlgea)
+                {
+                    GameObject spawnedObject=FillOpenSpot(hitCube.transform.position, up, spawnObject, _gameManager.ActivePlayerScript.MyPotentialGrowCubes);
+                    spawnedObject.GetComponent<PotentialCubeScript>().IsTouchingLeaf = true;
+                    spawnedObject.GetComponent<PotentialCubeScript>().LeafTouching = hit.collider.gameObject;
+                }
             }
         }
     }
@@ -185,6 +180,7 @@ public class MouseInputSystem : MonoBehaviour
 
             GameObject spawnedObject = Instantiate(spawnObject, spawnPosition, Quaternion.identity);
             targetList.Add(spawnedObject);
+            
             return spawnedObject;
         }
         else

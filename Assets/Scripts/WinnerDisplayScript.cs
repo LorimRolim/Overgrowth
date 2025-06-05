@@ -14,6 +14,6 @@ public class WinnerDisplayScript : MonoBehaviour
     }
     public void OnClickRestart()
     {
-        SceneManager.LoadScene("Game Screen");
+        SceneManager.LoadScene("Tutorial Screen");
     }
 }

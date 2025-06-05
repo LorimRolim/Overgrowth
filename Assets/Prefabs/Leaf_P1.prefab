@@ -126,6 +126,7 @@ MonoBehaviour:
   _gameManagerScript: {fileID: 0}
   _gameManager: {fileID: 0}
   raycastDistance: 10
+  _sunPointParticle: {fileID: 0}
   IsOutsideBoard: 0
   ShadowMultiplier: 1
   IsDead: 0

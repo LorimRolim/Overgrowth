@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Leaves : MonoBehaviour
@@ -6,6 +7,7 @@ public class Leaves : MonoBehaviour
     [SerializeField] private GameManager _gameManagerScript;
     [SerializeField] private GameObject _gameManager;
     [SerializeField] private float raycastDistance=10f ;
+    [SerializeField] private GameObject _sunPointParticle;
     
     public bool IsOutsideBoard;
 
@@ -15,11 +17,11 @@ public class Leaves : MonoBehaviour
 
     void Update()
     {
+        _gameManager = GameObject.Find("GameManager");
+        _gameManagerScript = _gameManager.GetComponent<GameManager>();
+        MakeCollider1();
         if (IsDead)
         {
-            _gameManager = GameObject.Find("GameManager");
-            _gameManagerScript = _gameManager.GetComponent<GameManager>();
-            
             for (int i = _gameManagerScript.ActivePlayerScript.MyLeaves.Count - 1; i >= 0; i--)
             {
                 if (_gameManagerScript.ActivePlayerScript.MyLeaves[i] == this)
@@ -31,7 +33,28 @@ public class Leaves : MonoBehaviour
 
             }
         }
+        if (_gameManagerScript.IsNewTurn)
+        {
+            Instantiate(_sunPointParticle);
+        }
+
+
+        if (IsInShadowed)
+        {
+            transform.localScale=new Vector3(0.5f,1f,0.5f);
+        }
+        if (!IsInShadowed)
+        {
+            transform.localScale =Vector3.one;
+        }
     }
+
+    private void MakeCollider1()
+    {
+        BoxCollider boxCollider= this.GetComponent<BoxCollider>();
+        boxCollider.size= Vector3.one;
+    }
+
     public void CheckIfInShadow()
     {
 
@@ -52,12 +75,6 @@ public class Leaves : MonoBehaviour
         Debug.DrawRay(transform.position, Vector3.up * raycastDistance, IsInShadowed ? Color.red : Color.green);
 
     }
-    //private void OnCollisionStay(Collision collision)
-    //{
-    //    if (collision.gameObject.tag == "Leaf") //||collision.gameObject.tag == "Root"
-    //    {
-    //        IsDead = true;
-    //    }
-    //}
+    
 
 }

@@ -40,7 +40,7 @@ public class PlayerOneScript : MonoBehaviour
     [SerializeField] private MeshRenderer _rootRenderer;
 
     public Material LeafMat;
-    [SerializeField] private Material _rootMat;
+    public Material RootMat;
 
     [SerializeField] private float raycastDistance = 10f; // Distance the raycast will travel
 
@@ -75,7 +75,7 @@ public class PlayerOneScript : MonoBehaviour
     private void SetMyMaterial()
     {
         _leafRenderer.material = LeafMat;
-        _rootRenderer.material = _rootMat;
+        _rootRenderer.material = RootMat;
     }
 
     // Update is called once per frame
@@ -136,7 +136,7 @@ public class PlayerOneScript : MonoBehaviour
         //}
         foreach (var root in MyRoots)
         {
-            root.GetComponent<MeshRenderer>().material = _rootMat;
+            root.GetComponent<MeshRenderer>().material = RootMat;
             Root rootScript = root.GetComponent<Root>();
             if (_gameManager.IsNewTurn)
             {

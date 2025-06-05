@@ -30,6 +30,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Image _rootsColor;
     [SerializeField] private Image _nextTurnColor;
     [SerializeField] private Image _border;
+    [SerializeField] private Image _algeaSpriteColor;
+    [SerializeField] private Image _leafSpriteColor;
+    [SerializeField] private Image _leafShadowSpriteColor;
+    [SerializeField] private Image _rootSpriteColor;
 
     public bool IsNextRound=false;
     public bool IsNewTurn;
@@ -57,6 +61,13 @@ public class GameManager : MonoBehaviour
     public LayerMask OtherPlayers;
     public int ActivePlayerIndex;
 
+    [Header("start conditions")]
+    [SerializeField] private int _startPlayerSunStart;
+    [SerializeField] private int _otherSunStart;
+    [SerializeField] private int _startPlayerWaterStart;
+    [SerializeField] private int _otherWaterStart;
+
+
     void Start()
     {
         // Ensure the game starts with Player 1's camera
@@ -74,17 +85,25 @@ public class GameManager : MonoBehaviour
         SetStartPositions();
         GrowStartTree();
         ActivePlayerScript =PlayerScripts[0];
+        SetStartPoints();
         PlayerScripts[1].enabled=false;
         PlayerScripts[2].enabled = false;
         PlayerScripts[3].enabled = false;
         ActivePlayerScript.WaterPoints = 1;
-        ActivePlayerScript.SunLightPoints = 1;
+        
 
         SetColorsUI();
 
         ActivePlayerScript.IsGrowing = true;
     }
-    
+
+    private void SetStartPoints()
+    {
+        PlayerScripts[0].SunLightPoints=_startPlayerSunStart;
+        PlayerScripts[1].SunLightPoints = _otherSunStart;
+        PlayerScripts[2].SunLightPoints = _otherSunStart;
+        PlayerScripts[3].SunLightPoints = _otherSunStart;
+    }
 
     private void SetBoardSize()
     {
@@ -113,7 +132,7 @@ public class GameManager : MonoBehaviour
     {
         //ActivePlayerScript = PlayerScripts[ActivePlayerIndex];
         //SetOtherPlayerLayerMask();
-        Debug.Log(Convert.ToString(OtherPlayers, 2).PadLeft(32, '0'));
+        //Debug.Log(Convert.ToString(OtherPlayers, 2).PadLeft(32, '0'));
 
         _waterLevelPlane.transform.position =new Vector3(0, WaterLevel,0);
         _previousRound = _roundCounter;
@@ -188,26 +207,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //private void SetOtherPlayerLayerMask()
-    //{
-    //    if (ActivePlayerScript.gameObject.layer == 9)
-    //    {
-    //        OtherPlayers = (0 << 9) | (1 << 11) | (1 << 12) | (1 << 10);
-    //    }
-    //    if (ActivePlayerScript.gameObject.layer == 10)
-    //    {
-    //        OtherPlayers = (1 << 9) | (1 << 11) | (1 << 12) | (0 << 10);
-    //    }
-    //    if (ActivePlayerScript.gameObject.layer == 11)
-    //    {
-    //        OtherPlayers = (1 << 9) | (0 << 11) | (1 << 12) | (1 << 10);
-    //    }
-    //    if (ActivePlayerScript.gameObject.layer == 12)
-    //    {
-    //        OtherPlayers = (1 << 9) | (1 << 11) | (0 << 12) | (1 << 10);
-    //    }
-
-    //}
 
     public void OnClickNextTurn()
     {
@@ -258,6 +257,11 @@ public class GameManager : MonoBehaviour
         _sunlightPointColor.color = ActivePlayerScript.LeafMat.color;
         _waterPointColor.color = ActivePlayerScript.LeafMat.color;
         _rootsColor.color = ActivePlayerScript.LeafMat.color;
+
+        _rootSpriteColor.color= ActivePlayerScript.RootMat.color;
+        _algeaSpriteColor.color = Color.green;
+        _leafSpriteColor.color = ActivePlayerScript.LeafMat.color;
+        _leafShadowSpriteColor.color = ActivePlayerScript.LeafMat.color;
     }
 
     public void DeActivatePlayerBodies()

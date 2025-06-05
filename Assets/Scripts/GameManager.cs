@@ -55,6 +55,7 @@ public class GameManager : MonoBehaviour
     private Vector2 _chopHotSpot=new Vector2(9f,97f);
     private Vector2 _growHotSpot=new Vector2(38f,1f);
     public LayerMask OtherPlayers;
+    public int ActivePlayerIndex;
 
     void Start()
     {
@@ -110,8 +111,8 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        ActivePlayerScript = PlayerScripts[PlayerIndex];
-        SetOtherPlayerLayerMask();
+        //ActivePlayerScript = PlayerScripts[ActivePlayerIndex];
+        //SetOtherPlayerLayerMask();
         Debug.Log(Convert.ToString(OtherPlayers, 2).PadLeft(32, '0'));
 
         _waterLevelPlane.transform.position =new Vector3(0, WaterLevel,0);
@@ -187,26 +188,26 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void SetOtherPlayerLayerMask()
-    {
-        if (ActivePlayerScript.gameObject.layer == 9)
-        {
-            OtherPlayers = (0 << 9) | (1 << 11) | (1 << 12) | (1 << 10);
-        }
-        if (ActivePlayerScript.gameObject.layer == 10)
-        {
-            OtherPlayers = (1 << 9) | (1 << 11) | (1 << 12) | (0 << 10);
-        }
-        if (ActivePlayerScript.gameObject.layer == 11)
-        {
-            OtherPlayers = (1 << 9) | (0 << 11) | (1 << 12) | (1 << 10);
-        }
-        if (ActivePlayerScript.gameObject.layer == 12)
-        {
-            OtherPlayers = (1 << 9) | (1 << 11) | (0 << 12) | (1 << 10);
-        }
+    //private void SetOtherPlayerLayerMask()
+    //{
+    //    if (ActivePlayerScript.gameObject.layer == 9)
+    //    {
+    //        OtherPlayers = (0 << 9) | (1 << 11) | (1 << 12) | (1 << 10);
+    //    }
+    //    if (ActivePlayerScript.gameObject.layer == 10)
+    //    {
+    //        OtherPlayers = (1 << 9) | (1 << 11) | (1 << 12) | (0 << 10);
+    //    }
+    //    if (ActivePlayerScript.gameObject.layer == 11)
+    //    {
+    //        OtherPlayers = (1 << 9) | (0 << 11) | (1 << 12) | (1 << 10);
+    //    }
+    //    if (ActivePlayerScript.gameObject.layer == 12)
+    //    {
+    //        OtherPlayers = (1 << 9) | (1 << 11) | (0 << 12) | (1 << 10);
+    //    }
 
-    }
+    //}
 
     public void OnClickNextTurn()
     {
@@ -236,10 +237,11 @@ public class GameManager : MonoBehaviour
         mouseInputScript.ErasePotentialCubes();
         PlayerIndex++;
         
-        if (PlayerIndex > PlayerScripts.Count)
+        if (PlayerIndex > PlayerScripts.Count-1)
         {
             PlayerIndex = 0;
         }
+        ActivePlayerIndex=PlayerIndex;
         ActivePlayerScript = PlayerScripts[PlayerIndex];
         SetColorsUI();
         DeActivatePlayerBodies();
@@ -260,7 +262,7 @@ public class GameManager : MonoBehaviour
 
     public void DeActivatePlayerBodies()
     {
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i <= PlayerScripts.Count-1; i++)
         {
             if (i == PlayerIndex)
             {

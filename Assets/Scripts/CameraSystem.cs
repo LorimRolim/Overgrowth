@@ -45,11 +45,11 @@ public class CameraSystem : MonoBehaviour
         }
         if(_isMouseRotating)
         {
-            float verticalRotate = Input.GetAxis("Mouse Y") * _rotSpeed * Time.deltaTime;
+            //float verticalRotate = Input.GetAxis("Mouse Y") * _rotSpeed * Time.deltaTime;
             float horizontalRotate = Input.GetAxis("Mouse X") * _rotSpeed * Time.deltaTime;
 
-            transform.Rotate(Vector3.right, -verticalRotate);
-            transform.Rotate(Vector3.up, horizontalRotate,Space.World);
+            //transform.Rotate(Vector3.right, -verticalRotate);
+            transform.Rotate(Vector3.up, horizontalRotate, Space.World);
         }
         
     }
